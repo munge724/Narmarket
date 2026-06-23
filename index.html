@@ -24,6 +24,9 @@ hr{border:none;border-top:2px solid #e8dcc6;margin:24px 0 32px}
 @media(min-width:700px){.img-grid{grid-template-columns:1fr 1fr}}
 .img-grid img{width:100%;height:320px;object-fit:cover}
 .caption{font-size:0.85rem;color:#666;font-style:italic;text-align:center;margin-top:8px}
+.car-grid{display:grid;grid-template-columns:1fr;gap:16px;margin:32px 0}
+@media(min-width:700px){.car-grid{grid-template-columns:1fr 1fr 1fr}}
+.car-grid img{width:100%;height:240px;object-fit:cover;border-radius:6px;border:2px solid #e8dcc6}
 .quote-box{background:#1a1a1a;color:#e8dcc6;padding:40px 32px;margin:40px 0;border-top:3px solid #b8860b;text-align:center}
 .quote-box p{font-size:1.25rem;font-style:italic;color:#fff;margin-bottom:16px}
 .quote-box span{font-size:0.95rem;color:#b8860b;font-family:-apple-system,sans-serif}
@@ -34,7 +37,7 @@ hr{border:none;border-top:2px solid #e8dcc6;margin:24px 0 32px}
 .contact-value a{color:#1a1a1a;text-decoration:none;border-bottom:1px solid #b8860b}
 .contact-value a:hover{color:#b8860b}
 footer{text-align:center;padding:24px;font-size:0.9rem;color:#777;border-top:1px solid #e8dcc6}
-.big-img{width:100%;max-height:400px;object-fit:cover;margin:32px 0}
+.big-img{width:100%;max-height:400px;object-fit:cover;margin:32px 0;border-radius:6px}
 .footer-note{font-size:0.95rem;font-style:italic;text-align:center;margin-top:32px;color:#666}
 </style>
 </head>
@@ -61,12 +64,12 @@ footer{text-align:center;padding:24px;font-size:0.9rem;color:#777;border-top:1px
 
 <div class="img-grid">
 <div>
-<img src="ken-photo.jpg" alt="Ken scouting game">
-<p class="caption">Left: Ken scouting game on the Mara plains</p>
+<img src="ken-photo.jpg" alt="Ken scouting tourist">
+<p class="caption">Left: Ken scouting tourist on Maasai Mara plains</p>
 </div>
 <div>
-<img src="lion-photo.jpg" alt="Male lion">
-<p class="caption">Right: Male lion at rest</p>
+<img src="buffalo-photo.jpg" alt="Male buffalo">
+<p class="caption">Right: Male buffalo</p>
 </div>
 </div>
 </div>
@@ -91,8 +94,24 @@ footer{text-align:center;padding:24px;font-size:0.9rem;color:#777;border-top:1px
 </div>
 </section>
 
-<!-- GET IN TOUCH -->
+<!-- OUR SAFARI VEHICLES -->
 <section>
+<div class="container">
+<p class="subhead">TRAVEL IN COMFORT</p>
+<h2>Our Safari Vehicles</h2>
+<hr>
+<p>We use comfortable, high-clearance 4x4 Land Cruisers with pop-up roofs. Perfect for game viewing, photography, and bumpy Mara roads. All vehicles are maintained to the highest safety standards.</p>
+
+<div class="car-grid">
+<img src="car1.jpg" alt="Safari vehicle 1">
+<img src="car2.jpg" alt="Safari vehicle 2">
+<img src="car3.jpg" alt="Safari vehicle 3">
+</div>
+</div>
+</section>
+
+<!-- GET IN TOUCH -->
+<section style="background:#f9f7f4">
 <div class="container">
 <p class="subhead">GET IN TOUCH</p>
 <h2>Plan Your Safari With Us</h2>
@@ -126,8 +145,8 @@ footer{text-align:center;padding:24px;font-size:0.9rem;color:#777;border-top:1px
 </div>
 </div>
 
-<img src="mara-landscape.jpg" alt="Masai Mara" class="big-img">
-<p class="caption">The Masai Mara — where every horizon holds a new story</p>
+<img src="giraffe-photo.jpg" alt="Giraffe in Masai Mara" class="big-img">
+<p class="caption">Tower of giraffes against the Mara skyline</p>
 <p class="footer-note">BobKen Tours - Small groups. Personal service. Unforgettable wild.</p>
 </div>
 </section>
