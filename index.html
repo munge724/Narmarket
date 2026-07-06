@@ -3,63 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FLAVA CATERING | Cloud Sync</title>
-<style>
-  /* SAME CSS AS BEFORE */
-    * { margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif; }
-  body { background:#f4f4f4; }
-  header { background:#8B0000; color:#fff; padding:20px; text-align:center; }
-  header h1 { color:#FFD700; }
-  .container { padding:15px; max-width:1200px; margin:auto; }
-  .top-bar { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; }
-  .btn { background:#8B0000; color:#fff; padding:14px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size:15px; }
-  .btn:hover { background:#FFD700; color:#8B0000; }
-  .btn-green { background:green; }
-  .category { background:#fff; margin:15px 0; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1); overflow:hidden; }
-  .cat-header { background:#8B0000; color:#FFD700; padding:12px; font-size:16px; font-weight:bold; }
-  table { width:100%; border-collapse:collapse; }
-  th { background:#f8f8f8; padding:10px; text-align:left; font-size:13px; }
-  td { padding:10px; border-bottom:1px solid #eee; font-size:14px; }
-  .qty-box { font-weight:bold; } .available { color:green; } .out { color:orange; }
-  input, select { width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; font-size:15px; margin:5px 0 10px 0; }
-  label { font-weight:bold; font-size:13px; }
-  .booking-card { background:#fff; border-left:5px solid #007BFF; padding:15px; margin:15px 0; border-radius:8px; cursor:pointer; }
-  .booking-card:hover { background:#fff8f0; }
-  .booking-card.ongoing { border-left:5px solid red; } .booking-card.pending { border-left:5px solid orange; } .booking-card.done { border-left:5px solid green; opacity:0.7; }
-  .countdown { font-size:18px; font-weight:bold; color:#8B0000; }
-  .booking-item { background:#fff8f0; border:1px solid #ddd; border-radius:10px; padding:12px; margin:10px 0; }
-  .doc-modal { background:#fff; padding:40px; width:95%; max-width:800px; }
-  .doc-header { text-align:center; border-bottom:3px solid #8B0000; padding-bottom:15px; margin-bottom:20px; }
-  .doc-logo-img { max-width:180px; margin-bottom:10px; }
-  .doc-title { font-size:20px; margin-top:10px; font-weight:bold; }
-  .doc-info { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:20px 0; }
-  .doc-table { width:100%; border-collapse:collapse; margin:20px 0; }
-  .doc-table th { background:#8B0000; color:#FFD700; padding:10px; }
-  .doc-table td { border:1px solid #ccc; padding:10px; }
-  .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:1000; padding:20px; }
-  .modal-content { background:#fff; padding:20px; border-radius:10px; width:95%; max-width:600px; max-height:90vh; overflow-y:auto; margin:10px auto; }
-  .close { float:right; font-size:28px; cursor:pointer; color:#8B0000; }
-  .alert { padding:10px; margin:10px 0; border-radius:5px; } .alert-error { background:#ffdddd; color:red; } .alert-success { background:#ddffdd; color:green; }
-  .edit-btn { background:#007BFF; color:#fff; border:none; padding:4px 8px; font-size:11px; border-radius:4px; cursor:pointer; margin-left:5px; }
-  #loading { text-align:center; padding:50px; font-size:18px; color:#8B0000; }
-  @media print { body * { visibility: hidden; } .doc-modal, .doc-modal * { visibility: visible; } .doc-modal { position: absolute; left: 0; top: 0; width:100%; } .no-print { display:none; }
-</style>
-</head>
-<body>
-
-<header><h1>FLAVA CATERING</h1><p>Cloud Sync - All Devices</p></header>
-
-<div class="container">
-  <div id="loading">Connecting to Cloud...</div>
-  <div id="mainApp" style="display:none;">
-    <div class="top-bar">
-      <button class="btn" onclick="openModal('addStockModal')">+ Add / Restock</button>
-      <button class="btn btn-green" onclick="openModal('bookingModal')">+ New Event</button>
-    </div><!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FLAVA CATERING - Inventory</title>
 <style>
   body { font-family: Arial, sans-serif; margin: 0; background: #f5f5f5; }
