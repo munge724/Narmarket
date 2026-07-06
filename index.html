@@ -55,29 +55,7 @@
     <div class="top-bar">
       <button class="btn" onclick="openModal('addStockModal')">+ Add / Restock</button>
       <button class="btn btn-green" onclick="openModal('bookingModal')">+ New Event</button>
-    </div>
-    <h2>Active Bookings - Click to View</h2><div id="activeBookings"></div>
-    <h2 style="margin-top:30px;">Current Stock</h2><div id="inventory"></div>
-  </div>
-</div>
-
-<!-- MODALS SAME AS BEFORE -->
-<div class="modal" id="addStockModal"><div class="modal-content"><span class="close" onclick="closeModal('addStockModal')">&times;</span><h2>Add New Item or Restock</h2><label>Select Existing Item</label><select id="existingItem"></select><label>Category</label><select id="itemCategory"><option value="">Select</option><option>Catering</option><option>Event</option><option>Deco</option></select><label>Item Name</label><input type="text" id="itemName"><label>Qty to Add</label><input type="number" id="itemQty" min="1"><button class="btn" onclick="addEquipment()">Save to Stock</button></div></div>
-<div class="modal" id="editPinModal"><div class="modal-content"><span class="close" onclick="closeModal('editPinModal')">&times;</span><h2>Enter PIN to Edit Stock</h2><input type="password" id="pinInput"><input type="hidden" id="editItemId"><button class="btn" onclick="checkPin()">Unlock</button><div id="pinError" style="color:red; margin-top:10px;"></div></div></div>
-<div class="modal" id="editQtyModal"><div class="modal-content"><span class="close" onclick="closeModal('editQtyModal')">&times;</span><h2>Edit Total Stock</h2><p id="editItemLabel"></p><input type="number" id="newTotalQty" min="0"><button class="btn btn-green" onclick="saveEditedQty()">Save Changes</button></div></div>
-<div class="modal" id="bookingModal"><div class="modal-content"><span class="close" onclick="closeModal('bookingModal')">&times;</span><h2>New Event Booking</h2><div id="bookingMessage"></div><label>Client Name</label><input type="text" id="clientName"><label>Event Name</label><input type="text" id="eventName"><label>Event Date</label><input type="date" id="eventDate"><div id="bookingForm"></div><button class="btn btn-green" onclick="submitBooking()">Submit Booking</button></div></div>
-<div class="modal" id="docModal"><div class="doc-modal"><span class="close no-print" onclick="closeModal('docModal')">&times;</span><div id="docContent"></div><button class="btn no-print" onclick="window.print()">💾 Save as PDF</button></div></div>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDiJslY_7xcSSxN-2V0jGhinUrrSUAhxLg",
-    authDomain: "simes1-abedd.firebaseapp.com",
-    databaseURL: "https://simes1-abedd-default-rtdb.firebaseio.com",
-    projectId: "simes1-abedd",
-<!DOCTYPE html>
+    </div><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -85,15 +63,15 @@
 <title>FLAVA CATERING - Inventory</title>
 <style>
   body { font-family: Arial, sans-serif; margin: 0; background: #f5f5f5; }
-  header { background: #8B0000; color: white; padding: 10px; text-align: center; }
-  header img { height: 50px; }
+  header { background: #8B0000; color: white; padding: 15px 10px; text-align: center; }
+  header img { height: 45px; background: white; padding: 5px; border-radius: 8px; }
  .btn { padding: 15px; border: none; color: white; font-weight: bold; width: 48%; margin: 5px 1%; border-radius: 8px; font-size: 16px; }
  .btn-red { background: #8B0000; }
  .btn-green { background: green; }
  .container { padding: 10px; }
-  h2 { margin: 10px 0 5px 0; }
- .item { background: white; padding: 10px; margin: 5px 0; border-radius: 5px; display: flex; justify-content: space-between; }
- .booking { background: #fff3cd; padding: 10px; margin: 5px 0; border-radius: 5px; border-left: 4px solid #ffc107; }
+  h2 { margin: 10px 0 5px 0; color: #333; }
+ .item { background: white; padding: 12px; margin: 5px 0; border-radius: 5px; display: flex; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+ .booking { background: #fff3cd; padding: 12px; margin: 5px 0; border-radius: 5px; border-left: 4px solid #ffc107; }
 </style>
 </head>
 <body>
@@ -109,8 +87,8 @@
     <button class="btn btn-green" onclick="newBooking()">+ New Event</button>
   </div>
 
-  <h2>Active Bookings - Click to View</h2>
-  <div id="bookingsList">No active bookings</div>
+  <h2>Active Bookings</h2>
+  <div id="bookingsList">Loading...</div>
 
   <h2>Current Stock</h2>
   <div id="stockList">Loading...</div>
@@ -121,7 +99,7 @@
   import { getDatabase, ref, onValue, set, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
   const firebaseConfig = {
-    databaseURL: "https://simes1-abedd-default-rtdb.firebaseio.com/"
+    databaseURL: "https://simes1-abedd-default-rtdb.firebaseio.com"
   };
 
   const app = initializeApp(firebaseConfig);
@@ -133,13 +111,13 @@
   let stock = {};
   let bookings = {};
 
-  // Load stock
   onValue(stockRef, (snapshot) => {
     stock = snapshot.val() || {};
     renderStock();
+  }, (error) => {
+    document.getElementById('stockList').innerHTML = "Error: " + error.message;
   });
 
-  // Load bookings
   onValue(bookingsRef, (snapshot) => {
     bookings = snapshot.val() || {};
     renderBookings();
@@ -147,27 +125,25 @@
 
   function renderStock() {
     const list = document.getElementById('stockList');
+    if(Object.keys(stock).length === 0) { list.innerHTML = 'No stock yet. Tap + Add / Restock'; return; }
     list.innerHTML = '';
     for(let id in stock) {
-      list.innerHTML += `<div class="item"><span>${stock[id].name}</span><span>Qty: ${stock[id].qty}</span></div>`;
+      list.innerHTML += `<div class="item"><span>${stock[id].name}</span><span><b>Qty: ${stock[id].qty}</b></span></div>`;
     }
   }
 
   function renderBookings() {
     const list = document.getElementById('bookingsList');
+    if(Object.keys(bookings).length === 0) { list.innerHTML = 'No active bookings'; return; }
     list.innerHTML = '';
-    if(Object.keys(bookings).length === 0) {
-      list.innerHTML = 'No active bookings';
-      return;
-    }
     for(let id in bookings) {
-      list.innerHTML += `<div class="booking"><b>${bookings[id].event}</b><br>${bookings[id].date}</div>`;
+      list.innerHTML += `<div class="booking"><b>${bookings[id].event}</b><br>Date: ${bookings[id].date}</div>`;
     }
   }
 
   window.addStock = () => {
     const name = prompt("Item name:");
-    const qty = parseInt(prompt("Quantity to add:"));
+    const qty = parseInt(prompt("Quantity:"));
     if(name && qty) {
       const newId = Date.now();
       stock[newId] = {name, qty};
