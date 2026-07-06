@@ -3,107 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FLAVA CATERING | Cloud Sync</title>
+<title>FLAVA CATERING | Inventory</title>
 <style>
-  /* SAME CSS AS BEFORE */
     * { margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif; }
   body { background:#f4f4f4; }
-  header { background:#8B0000; color:#fff; padding:20px; text-align:center; }
-  header h1 { color:#FFD700; }
-  .container { padding:15px; max-width:1200px; margin:auto; }
-  .top-bar { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; }
-  .btn { background:#8B0000; color:#fff; padding:14px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size:15px; }
-  .btn:hover { background:#FFD700; color:#8B0000; }
-  .btn-green { background:green; }
-  .category { background:#fff; margin:15px 0; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1); overflow:hidden; }
-  .cat-header { background:#8B0000; color:#FFD700; padding:12px; font-size:16px; font-weight:bold; }
+  header { background:#8B0000; color:#fff; padding:15px; text-align:center; }
+  header img { height:45px; background:#fff; padding:5px; border-radius:8px; margin-bottom:5px; }
+  header h1 { color:#FFD700; font-size:18px; }
+.container { padding:15px; max-width:1200px; margin:auto; }
+.top-bar { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; }
+.btn { background:#8B0000; color:#fff; padding:14px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size:15px; }
+.btn:hover { background:#FFD700; color:#8B0000; }
+.btn-green { background:green; }
+.category { background:#fff; margin:15px 0; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1); overflow:hidden; }
+.cat-header { background:#8B0000; color:#FFD700; padding:12px; font-size:16px; font-weight:bold; }
   table { width:100%; border-collapse:collapse; }
   th { background:#f8f8f8; padding:10px; text-align:left; font-size:13px; }
   td { padding:10px; border-bottom:1px solid #eee; font-size:14px; }
-  .qty-box { font-weight:bold; } .available { color:green; } .out { color:orange; }
+.available { color:green; font-weight:bold; }.out { color:orange; font-weight:bold; }
   input, select { width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; font-size:15px; margin:5px 0 10px 0; }
   label { font-weight:bold; font-size:13px; }
-  .booking-card { background:#fff; border-left:5px solid #007BFF; padding:15px; margin:15px 0; border-radius:8px; cursor:pointer; }
-  .booking-card:hover { background:#fff8f0; }
-  .booking-card.ongoing { border-left:5px solid red; } .booking-card.pending { border-left:5px solid orange; } .booking-card.done { border-left:5px solid green; opacity:0.7; }
-  .countdown { font-size:18px; font-weight:bold; color:#8B0000; }
-  .booking-item { background:#fff8f0; border:1px solid #ddd; border-radius:10px; padding:12px; margin:10px 0; }
-  .doc-modal { background:#fff; padding:40px; width:95%; max-width:800px; }
-  .doc-header { text-align:center; border-bottom:3px solid #8B0000; padding-bottom:15px; margin-bottom:20px; }
-  .doc-logo-img { max-width:180px; margin-bottom:10px; }
-  .doc-title { font-size:20px; margin-top:10px; font-weight:bold; }
-  .doc-info { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:20px 0; }
-  .doc-table { width:100%; border-collapse:collapse; margin:20px 0; }
-  .doc-table th { background:#8B0000; color:#FFD700; padding:10px; }
-  .doc-table td { border:1px solid #ccc; padding:10px; }
-  .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:1000; padding:20px; }
-  .modal-content { background:#fff; padding:20px; border-radius:10px; width:95%; max-width:600px; max-height:90vh; overflow-y:auto; margin:10px auto; }
-  .close { float:right; font-size:28px; cursor:pointer; color:#8B0000; }
-  .alert { padding:10px; margin:10px 0; border-radius:5px; } .alert-error { background:#ffdddd; color:red; } .alert-success { background:#ddffdd; color:green; }
-  .edit-btn { background:#007BFF; color:#fff; border:none; padding:4px 8px; font-size:11px; border-radius:4px; cursor:pointer; margin-left:5px; }
+.booking-card { background:#fff; border-left:5px solid #007BFF; padding:15px; margin:15px 0; border-radius:8px; cursor:pointer; }
+.booking-card:hover { background:#fff8f0; }
+.booking-card.ongoing { border-left:5px solid red; }.booking-card.pending { border-left:5px solid orange; }.booking-card.done { border-left:5px solid green; opacity:0.7; }
+.countdown { font-size:18px; font-weight:bold; color:#8B0000; }
+.booking-item { background:#fff8f0; border:1px solid #ddd; border-radius:10px; padding:12px; margin:10px 0; }
+.modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:1000; padding:20px; }
+.modal-content { background:#fff; padding:20px; border-radius:10px; width:95%; max-width:600px; max-height:90vh; overflow-y:auto; margin:10px auto; }
+.doc-modal { background:#fff; padding:40px; width:95%; max-width:800px; }
+.doc-header { text-align:center; border-bottom:3px solid #8B0000; padding-bottom:15px; margin-bottom:20px; }
+.doc-logo-img { max-width:180px; margin-bottom:10px; }
+.doc-title { font-size:20px; margin-top:10px; font-weight:bold; }
+.doc-info { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:20px 0; }
+.close { float:right; font-size:28px; cursor:pointer; color:#8B0000; }
+.alert { padding:10px; margin:10px 0; border-radius:5px; text-align:center; font-weight:bold; }.alert-error { background:#ffdddd; color:red; }.alert-success { background:#ddffdd; color:green; font-size:16px; }
+.edit-btn { background:#007BFF; color:#fff; border:none; padding:4px 8px; font-size:11px; border-radius:4px; cursor:pointer; margin-left:5px; }
   #loading { text-align:center; padding:50px; font-size:18px; color:#8B0000; }
-  @media print { body * { visibility: hidden; } .doc-modal, .doc-modal * { visibility: visible; } .doc-modal { position: absolute; left: 0; top: 0; width:100%; } .no-print { display:none; }
+.doc-table { width:100%; border-collapse:collapse; margin:20px 0; }
+.doc-table th { background:#8B0000; color:#FFD700; padding:10px; }
+.doc-table td { border:1px solid #ccc; padding:10px; }
+  @media print { body * { visibility: hidden; }.doc-modal,.doc-modal * { visibility: visible; }.doc-modal { position: absolute; left: 0; top: 0; width:100%; }.no-print { display:none; }
 </style>
 </head>
 <body>
 
-<header><h1>FLAVA CATERING</h1><p>Cloud Sync - All Devices</p></header>
+<header>
+  <img src="attachment://0" alt="FLAVA CATERING">
+  <h1>FLAVA CATERING</h1>
+</header>
 
 <div class="container">
   <div id="loading">Connecting to Cloud...</div>
   <div id="mainApp" style="display:none;">
     <div class="top-bar">
-      <button class="btn" onclick="openModal('addStockModal')">+ Add / Restock</button>
-      <button class="btn btn-green" onclick="openModal('bookingModal')">+ New Event</button>
+      <button class="btn" onclick="window.openModal('addStockModal')">+ Add / Restock</button>
+      <button class="btn btn-green" onclick="window.openModal('bookingModal')">+ New Event</button>
     </div>
-    <h2>Active Bookings - Click to View</h2><div id="activeBookings"></div>
+    <h2>Active Bookings - Click to View PDF</h2><div id="activeBookings"></div>
     <h2 style="margin-top:30px;">Current Stock</h2><div id="inventory"></div>
   </div>
 </div>
 
-<!-- MODALS SAME AS BEFORE -->
-<div class="modal" id="addStockModal"><div class="modal-content"><span class="close" onclick="closeModal('addStockModal')">&times;</span><h2>Add New Item or Restock</h2><label>Select Existing Item</label><select id="existingItem"></select><label>Category</label><select id="itemCategory"><option value="">Select</option><option>Catering</option><option>Event</option><option>Deco</option></select><label>Item Name</label><input type="text" id="itemName"><label>Qty to Add</label><input type="number" id="itemQty" min="1"><button class="btn" onclick="addEquipment()">Save to Stock</button></div></div>
-<div class="modal" id="editPinModal"><div class="modal-content"><span class="close" onclick="closeModal('editPinModal')">&times;</span><h2>Enter PIN to Edit Stock</h2><input type="password" id="pinInput"><input type="hidden" id="editItemId"><button class="btn" onclick="checkPin()">Unlock</button><div id="pinError" style="color:red; margin-top:10px;"></div></div></div>
-<div class="modal" id="editQtyModal"><div class="modal-content"><span class="close" onclick="closeModal('editQtyModal')">&times;</span><h2>Edit Total Stock</h2><p id="editItemLabel"></p><input type="number" id="newTotalQty" min="0"><button class="btn btn-green" onclick="saveEditedQty()">Save Changes</button></div></div>
-<div class="modal" id="bookingModal"><div class="modal-content"><span class="close" onclick="closeModal('bookingModal')">&times;</span><h2>New Event Booking</h2><div id="bookingMessage"></div><label>Client Name</label><input type="text" id="clientName"><label>Event Name</label><input type="text" id="eventName"><label>Event Date</label><input type="date" id="eventDate"><div id="bookingForm"></div><button class="btn btn-green" onclick="submitBooking()">Submit Booking</button></div></div>
-<div class="modal" id="docModal"><div class="doc-modal"><span class="close no-print" onclick="closeModal('docModal')">&times;</span><div id="docContent"></div><button class="btn no-print" onclick="window.print()">💾 Save as PDF</button></div></div>
+<!-- MODALS -->
+<div class="modal" id="addStockModal"><div class="modal-content"><span class="close" onclick="window.closeModal('addStockModal')">&times;</span><h2>Add New Item or Restock</h2><label>Select Category First</label><select id="addCatSelect" onchange="window.loadItemsByCategory()"><option value="">-- Select Category --</option><option>Catering</option><option>Event</option><option>Deco</option></select><label>Select Existing Item</label><select id="existingItem"><option value="">-- Select Item --</option></select><label>Or Add New Item Name</label><input type="text" id="itemName"><label>Qty to Add</label><input type="number" id="itemQty" min="1"><button class="btn" onclick="window.addEquipment()">Save to Stock</button></div></div>
+
+<div class="modal" id="editPinModal"><div class="modal-content"><span class="close" onclick="window.closeModal('editPinModal')">&times;</span><h2>Enter PIN to Edit Stock</h2><input type="password" id="pinInput"><input type="hidden" id="editItemId"><button class="btn" onclick="window.checkPin()">Unlock</button><div id="pinError" style="color:red; margin-top:10px;"></div></div></div>
+
+<div class="modal" id="editQtyModal"><div class="modal-content"><span class="close" onclick="window.closeModal('editQtyModal')">&times;</span><h2>Edit Total Stock</h2><p id="editItemLabel"></p><input type="number" id="newTotalQty" min="0"><button class="btn btn-green" onclick="window.saveEditedQty()">Save Changes</button></div></div>
+
+<div class="modal" id="bookingModal"><div class="modal-content"><span class="close" onclick="window.closeModal('bookingModal')">&times;</span><h2>New Event Booking</h2><div id="bookingMessage"></div><label>Client Name</label><input type="text" id="clientName"><label>Event Name</label><input type="text" id="eventName"><label>Event Date</label><input type="date" id="eventDate"><div id="bookingForm"></div><button class="btn btn-green" onclick="window.submitBooking()">Submit Booking</button></div></div>
+
+<div class="modal" id="docModal"><div class="doc-modal"><span class="close no-print" onclick="window.closeModal('docModal')">&times;</span><div id="docContent"></div><button class="btn no-print" onclick="window.print()">💾 Download PDF</button></div></div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  import { getDatabase, ref, set, onValue, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyDiJslY_7xcSSxN-2V0jGhinUrrSUAhxLg",
-    authDomain: "simes1-abedd.firebaseapp.com",
-    databaseURL: "https://simes1-abedd-default-rtdb.firebaseio.com",
-    projectId: "simes1-abedd",
-    storageBucket: "simes1-abedd.firebasestorage.app",
-    appId: "1:15118142491:web:177e2fe80553fdf2bfbcbe"
+    databaseURL: "https://simes1-abedd-default-rtdb.firebaseio.com"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  let equipment = [];
-  let bookings = [];
+  let equipment = {};
+  let bookings = {};
   const PIN = "Flava";
 
   const cateringItems = ["Plates - Plastic", "Plates - Executive", "Spoons", "Serving Spoon", "Panga", "Jiko", "Mwiko", "Washing Points", "Creater", "Knife", "Meat Log", "Pans", "Sufuria", "Basins", "Jiko Stands"];
   const eventItems = ["Tent - Corner", "Tent - Peak", "Tent - Joint / Bunduki", "Seats", "Connectors", "Leg Supports", "Straights", "Kamba"];
   const decoItems = ["Plastic Flowers", "Carpet", "Sheet - White", "Sheet - Red", "Sheet - Gold", "Sheet - Maroon", "Sheet - Blue", "Sheet - Green", "Sheet - Black", "Sheet - Purple", "Sheet - Pink", "Sheet - Orange"];
-  const allItems = [...cateringItems, ...eventItems, ...decoItems];
 
-  // LIVE SYNC FROM FIREBASE
   onValue(ref(db, 'equipment'), (snapshot) => {
-    equipment = snapshot.val() || [];
-    if(equipment.length === 0) createDefaultStock();
+    equipment = snapshot.val() || {};
+    if(Object.keys(equipment).length === 0) createDefaultStock();
     else { renderInventory(); showApp(); }
-  }, (error) => {
-    document.getElementById('loading').innerHTML = "Firebase Error: " + error.message + "<br>Please create Realtime Database and set rules to true";
   });
 
   onValue(ref(db, 'bookings'), (snapshot) => {
-    bookings = snapshot.val() || [];
+    bookings = snapshot.val() || {};
     renderBookings();
   });
 
@@ -113,109 +111,151 @@
   }
 
   function createDefaultStock() {
-    equipment = []; let id = 1;
-    allItems.forEach(name => {
-      let category = cateringItems.includes(name) ? "Catering" : eventItems.includes(name) ? "Event" : "Deco";
-      equipment.push({id: id++, name, category, total: 100, out: 0});
+    let temp = {};
+    [...cateringItems,...eventItems,...decoItems].forEach((name, i) => {
+      let category = cateringItems.includes(name)? "Catering" : eventItems.includes(name)? "Event" : "Deco";
+      temp[i] = {name, category, total: 100, out: 0};
     });
-    saveAll();
+    set(ref(db, 'equipment'), temp);
   }
 
-  function saveAll(){
-    set(ref(db, 'equipment'), equipment);
-    set(ref(db, 'bookings'), bookings);
-  }
-
-  function renderInventory() { /* SAME AS BEFORE */ 
-    const container = document.getElementById('inventory');
+  window.loadItemsByCategory = function() {
+    const cat = document.getElementById('addCatSelect').value;
     const select = document.getElementById('existingItem');
-    container.innerHTML = ''; select.innerHTML = '<option value="">-- Add New Item --</option>';
+    select.innerHTML = '<option value="">-- Select Item --</option>';
+    for(let id in equipment){
+      if(equipment[id].category === cat){
+        select.innerHTML += `<option value="${id}">${equipment[id].name} - Current: ${equipment[id].total}</option>`;
+      }
+    }
+  }
+
+  function renderInventory() {
+    const container = document.getElementById('inventory');
+    container.innerHTML = '';
     ["Catering", "Event", "Deco"].forEach(cat => {
-      const items = equipment.filter(e => e.category === cat);
-      if(items.length === 0) return;
       let tableRows = '';
-      items.forEach(item => {
+      for(let id in equipment){
+        let item = equipment[id];
+        if(item.category!== cat) continue;
         const available = item.total - item.out;
-        select.innerHTML += `<option value="${item.id}">${item.name} - Current: ${item.total}</option>`;
-        tableRows += `<tr><td><b>${item.name}</b> <button class="edit-btn" onclick="requestEdit(${item.id})">Edit</button></td><td>Total: ${item.total}</td><td class="available">Avail: ${available}</td><td class="out">Out: ${item.out}</td><td><button class="btn" style="padding:5px; font-size:11px; background:orange;" onclick="manualOut(${item.id})">+1</button><button class="btn" style="padding:5px; font-size:11px; background:green;" onclick="manualIn(${item.id})">-1</button></td></tr>`;
-      });
-      container.innerHTML += `<div class="category"><div class="cat-header">${cat} - ${items.length} items</div><table><thead><tr><th>Item</th><th>Total</th><th>Avail</th><th>Out</th><th></th></tr></thead><tbody>${tableRows}</tbody></table></div>`;
+        tableRows += `<tr><td><b>${item.name}</b> <button class="edit-btn" onclick="window.requestEdit('${id}')">Edit</button></td><td>Total: ${item.total}</td><td class="available">Avail: ${available}</td><td class="out">Out: ${item.out}</td></tr>`;
+      }
+      if(tableRows) container.innerHTML += `<div class="category"><div class="cat-header">${cat}</div><table><thead><tr><th>Item</th><th>Total</th><th>Avail</th><th>Out</th></tr></thead><tbody>${tableRows}</tbody></table></div>`;
     });
   }
 
-  function renderBookings() { /* SAME */ 
+  function renderBookings() {
     const container = document.getElementById('activeBookings');
     container.innerHTML = '';
-    if(bookings.length === 0) { container.innerHTML = '<p>No active bookings</p>'; return; }
-    bookings.sort((a,b) => new Date(a.date) - new Date(b.date)).forEach(b => {
+    if(Object.keys(bookings).length === 0) { container.innerHTML = '<p>No active bookings</p>'; return; }
+    for(let id in bookings){
+      let b = bookings[id];
       const diffDays = Math.ceil((new Date(b.date) - new Date()) / (1000 * 60 * 60 * 24));
-      let status = diffDays < 0 ? 'Completed' : diffDays === 0 ? 'ONGOING TODAY' : `${diffDays} days to go`;
-      let className = diffDays < 0 ? 'done' : diffDays === 0 ? 'ongoing' : 'pending';
-      container.innerHTML += `<div class="booking-card ${className}" onclick="viewBookingDoc(${b.id})"><h3>${b.eventName}</h3><p><b>Client:</b> ${b.client}</p><p><b>Date:</b> ${b.date}</p><p class="countdown">${status}</p></div>`;
-    });
+      let status = diffDays < 0? 'Completed' : diffDays === 0? 'ONGOING TODAY' : `${diffDays} days to go`;
+      let className = diffDays < 0? 'done' : diffDays === 0? 'ongoing' : 'pending';
+      container.innerHTML += `<div class="booking-card ${className}" onclick="window.viewBookingDoc('${id}')"><h3>${b.eventName}</h3><p><b>Client:</b> ${b.client}</p><p><b>Date:</b> ${b.date}</p><p class="countdown">${status}</p></div>`;
+    }
   }
 
-  function viewBookingDoc(id) {
-    const b = bookings.find(x => x.id === id);
-    let itemsRows = ''; b.items.forEach((i, index) => { itemsRows += `<tr><td>${index+1}</td><td>${i.name}</td><td>${i.qty}</td></tr>`; });
-    
-    // USE YOUR UPLOADED LOGO
+  window.viewBookingDoc = function(id) {
+    const b = bookings[id];
+    let itemsRows = '';
+    for(let itemId in b.items){
+      itemsRows += `<tr><td>${b.items[itemId].name}</td><td>${b.items[itemId].qty}</td></tr>`;
+    }
+
     document.getElementById('docContent').innerHTML = `
       <div class="doc-header">
         <img src="attachment://0" class="doc-logo-img">
         <p>Narok, Kenya | Tel: 07XX XXX</p>
         <div class="doc-title">EQUIPMENT BOOKING SLIP</div>
       </div>
-      <div class="doc-info"><p><b>Client:</b> ${b.client}</p><p><b>Event:</b> ${b.eventName}</p><p><b>Date:</b> ${b.date}</p><p><b>ID:</b> #${b.id}</p></div>
-      <table class="doc-table"><thead><tr><th>#</th><th>Item</th><th>Qty</th></tr></thead><tbody>${itemsRows}</tbody></table>
+      <div class="doc-info">
+        <p><b>Client:</b> ${b.client}</p>
+        <p><b>Event:</b> ${b.eventName}</p>
+        <p><b>Date:</b> ${b.date}</p>
+        <p><b>ID:</b> #${b.id}</p>
+      </div>
+      <table class="doc-table">
+        <thead><tr><th>#</th><th>Item</th><th>Qty</th></tr></thead>
+        <tbody>${itemsRows}</tbody>
+      </table>
       <p><b>Notes:</b> All items must be returned in good condition after event.</p>`;
-    openModal('docModal');
+    window.openModal('docModal');
   }
 
-  function renderBookingForm() { /* SAME */ 
+  function renderBookingForm() {
     const container = document.getElementById('bookingForm'); container.innerHTML = '';
     ["Catering", "Event", "Deco"].forEach(cat => {
-      const items = equipment.filter(e => e.category === cat && e.total > 0);
-      if(items.length === 0) return;
-      let cards = ''; items.forEach(item => {
+      let cards = '';
+      for(let id in equipment){
+        let item = equipment[id];
+        if(item.category!== cat) continue;
         const available = item.total - item.out;
-        cards += `<div class="booking-item"><div style="display:flex; justify-content:space-between;"><b>${item.name}</b><span>Avail: ${available}</span></div><label>Qty Needed</label><input type="number" id="qty_${item.id}" min="0" max="${available}"></div>`;
-      });
-      container.innerHTML += `<div class="category"><div class="cat-header">${cat}</div>${cards}</div>`;
-    });
-  }
-
-  function submitBooking() { /* SAME */ 
-    const client = document.getElementById('clientName').value; const event = document.getElementById('eventName').value; const date = document.getElementById('eventDate').value;
-    const msgDiv = document.getElementById('bookingMessage'); msgDiv.innerHTML = '';
-    if(!client ||!event ||!date) { msgDiv.innerHTML = '<div class="alert alert-error">Fill all details</div>'; return; }
-    let bookedItems = []; let hasError = false;
-    equipment.forEach(item => {
-      const input = document.getElementById(`qty_${item.id}`);
-      if(input) { const requested = parseInt(input.value) || 0; const available = item.total - item.out;
-        if(requested > available) { hasError = true; msgDiv.innerHTML += `<div class="alert alert-error">Not enough ${item.name}</div>`; }
-        if(requested > 0) { item.out += requested; bookedItems.push({id:item.id, name:item.name, qty:requested}); }
+        if(available > 0) cards += `<div class="booking-item"><div style="display:flex; justify-content:space-between;"><b>${item.name}</b><span>Avail: ${available}</span></div><label>Qty Needed</label><input type="number" id="qty_${id}" min="0" max="${available}"></div>`;
       }
+      if(cards) container.innerHTML += `<div class="category"><div class="cat-header">${cat}</div>${cards}</div>`;
     });
-    if(!hasError) { bookings.push({id: Date.now(), client, eventName:event, date, items:bookedItems}); msgDiv.innerHTML = `<div class="alert alert-success">Booking saved!</div>`; setTimeout(() => closeModal('bookingModal'), 1200); }
-    saveAll();
   }
 
-  function addEquipment() { /* SAME */ 
-    const name = document.getElementById('itemName').value; const category = document.getElementById('itemCategory').value; const qty = parseInt(document.getElementById('itemQty').value) || 0; const existingId = document.getElementById('existingItem').value;
-    if(!name ||!category || qty < 1) { alert('Fill all fields'); return; }
-    if(existingId) equipment.find(e => e.id == existingId).total += qty;
-    else equipment.push({id: Date.now(), name, category, total: qty, out: 0});
-    closeModal('addStockModal'); saveAll();
+  window.submitBooking = function() {
+    const client = document.getElementById('clientName').value;
+    const event = document.getElementById('eventName').value;
+    const date = document.getElementById('eventDate').value;
+    const msgDiv = document.getElementById('bookingMessage');
+    msgDiv.innerHTML = '';
+    if(!client ||!event ||!date) { msgDiv.innerHTML = '<div class="alert alert-error">Please fill all details</div>'; return; }
+
+    let bookedItems = {};
+    let hasError = false;
+    for(let id in equipment){
+      const input = document.getElementById(`qty_${id}`);
+      if(input) {
+        const requested = parseInt(input.value) || 0;
+        const available = equipment[id].total - equipment[id].out;
+        if(requested > available) { hasError = true; msgDiv.innerHTML += `<div class="alert alert-error">Not enough ${equipment[id].name}</div>`; }
+        if(requested > 0) {
+          equipment[id].out += requested;
+          bookedItems[id] = {name:equipment[id].name, qty:requested};
+        }
+      }
+    }
+    if(!hasError) {
+      push(ref(db, 'bookings'), {client, eventName:event, date, items:bookedItems, id: Date.now()});
+      set(ref(db, 'equipment'), equipment);
+      msgDiv.innerHTML = `<div class="alert alert-success">✅ Booking Submitted Successfully!</div>`;
+      setTimeout(() => {
+        document.getElementById('clientName').value = '';
+        document.getElementById('eventName').value = '';
+        document.getElementById('eventDate').value = '';
+        window.closeModal('bookingModal');
+      }, 1500);
+    }
   }
 
-  window.requestEdit = function(id) { document.getElementById('editItemId').value = id; document.getElementById('pinInput').value = ''; openModal('editPinModal'); }
-  window.checkPin = function() { if(document.getElementById('pinInput').value === PIN) { const id = document.getElementById('editItemId').value; const item = equipment.find(e => e.id == id); document.getElementById('editItemLabel').innerText = `Editing: ${item.name}`; document.getElementById('newTotalQty').value = item.total; closeModal('editPinModal'); openModal('editQtyModal'); } else document.getElementById('pinError').innerText = 'Wrong PIN'; }
-  window.saveEditedQty = function() { const id = document.getElementById('editItemId').value; const newQty = parseInt(document.getElementById('newTotalQty').value) || 0; const item = equipment.find(e => e.id == id); if(newQty < item.out) { alert(`Cannot set below ${item.out}`); return; } item.total = newQty; closeModal('editQtyModal'); saveAll(); }
-  window.manualOut = function(id){ let item = equipment.find(e => e.id === id); if(item.out < item.total) item.out++; saveAll(); }
-  window.manualIn = function(id){ let item = equipment.find(e => e.id === id); if(item.out > 0) item.out--; saveAll(); }
+  window.addEquipment = function() {
+    const name = document.getElementById('itemName').value;
+    const category = document.getElementById('addCatSelect').value;
+    const qty = parseInt(document.getElementById('itemQty').value) || 0;
+    const existingId = document.getElementById('existingItem').value;
+    if(!category || qty < 1) { alert('Select category and qty'); return; }
+    if(!name &&!existingId) { alert('Select item or enter new name'); return; }
+
+    if(existingId) equipment[existingId].total += qty;
+    else {
+      const newId = Date.now();
+      equipment[newId] = {name, category, total: qty, out: 0};
+    }
+    set(ref(db, 'equipment'), equipment);
+    window.closeModal('addStockModal');
+  }
+
+  window.requestEdit = function(id) { document.getElementById('editItemId').value = id; document.getElementById('pinInput').value = ''; window.openModal('editPinModal'); }
+  window.checkPin = function() { if(document.getElementById('pinInput').value === PIN) { const id = document.getElementById('editItemId').value; const item = equipment[id]; document.getElementById('editItemLabel').innerText = `Editing: ${item.name}`; document.getElementById('newTotalQty').value = item.total; window.closeModal('editPinModal'); window.openModal('editQtyModal'); } else document.getElementById('pinError').innerText = 'Wrong PIN'; }
+  window.saveEditedQty = function() { const id = document.getElementById('editItemId').value; const newQty = parseInt(document.getElementById('newTotalQty').value) || 0; const item = equipment[id]; if(newQty < item.out) { alert(`Cannot set below ${item.out}`); return; } item.total = newQty; set(ref(db, 'equipment'), equipment); window.closeModal('editQtyModal'); }
   window.openModal = function(id) { document.getElementById(id).style.display = 'flex'; if(id === 'bookingModal') renderBookingForm(); }
   window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
 </script>
 </body>
-                                                                                                                                                                                                                                                                                        </html>
+</html>
