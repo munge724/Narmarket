@@ -77,145 +77,112 @@
     authDomain: "simes1-abedd.firebaseapp.com",
     databaseURL: "https://simes1-abedd-default-rtdb.firebaseio.com",
     projectId: "simes1-abedd",
-    storageBucket: "simes1-abedd.firebasestorage.app",
-    appId: "1:15118142491:web:177e2fe80553fdf2bfbcbe"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLAVA CATERING - Inventory</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; background: #f5f5f5; }
+  header { background: #8B0000; color: white; padding: 10px; text-align: center; }
+  header img { height: 50px; }
+ .btn { padding: 15px; border: none; color: white; font-weight: bold; width: 48%; margin: 5px 1%; border-radius: 8px; font-size: 16px; }
+ .btn-red { background: #8B0000; }
+ .btn-green { background: green; }
+ .container { padding: 10px; }
+  h2 { margin: 10px 0 5px 0; }
+ .item { background: white; padding: 10px; margin: 5px 0; border-radius: 5px; display: flex; justify-content: space-between; }
+ .booking { background: #fff3cd; padding: 10px; margin: 5px 0; border-radius: 5px; border-left: 4px solid #ffc107; }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="https://i.imgur.com/8Qz5ZQp.png" alt="FLAVA CATERING"> 
+  <h1 style="margin:5px 0; font-size:18px;">FLAVA CATERING</h1>
+</header>
+
+<div class="container">
+  <div>
+    <button class="btn btn-red" onclick="addStock()">+ Add / Restock</button>
+    <button class="btn btn-green" onclick="newBooking()">+ New Event</button>
+  </div>
+
+  <h2>Active Bookings - Click to View</h2>
+  <div id="bookingsList">No active bookings</div>
+
+  <h2>Current Stock</h2>
+  <div id="stockList">Loading...</div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, onValue, set, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+  const firebaseConfig = {
+    databaseURL: "https://simes1-abedd-default-rtdb.firebaseio.com/"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  let equipment = [];
-  let bookings = [];
-  const PIN = "Flava";
+  const stockRef = ref(db, 'stock');
+  const bookingsRef = ref(db, 'bookings');
 
-  const cateringItems = ["Plates - Plastic", "Plates - Executive", "Spoons", "Serving Spoon", "Panga", "Jiko", "Mwiko", "Washing Points", "Creater", "Knife", "Meat Log", "Pans", "Sufuria", "Basins", "Jiko Stands"];
-  const eventItems = ["Tent - Corner", "Tent - Peak", "Tent - Joint / Bunduki", "Seats", "Connectors", "Leg Supports", "Straights", "Kamba"];
-  const decoItems = ["Plastic Flowers", "Carpet", "Sheet - White", "Sheet - Red", "Sheet - Gold", "Sheet - Maroon", "Sheet - Blue", "Sheet - Green", "Sheet - Black", "Sheet - Purple", "Sheet - Pink", "Sheet - Orange"];
-  const allItems = [...cateringItems, ...eventItems, ...decoItems];
+  let stock = {};
+  let bookings = {};
 
-  // LIVE SYNC FROM FIREBASE
-  onValue(ref(db, 'equipment'), (snapshot) => {
-    equipment = snapshot.val() || [];
-    if(equipment.length === 0) createDefaultStock();
-    else { renderInventory(); showApp(); }
-  }, (error) => {
-    document.getElementById('loading').innerHTML = "Firebase Error: " + error.message + "<br>Please create Realtime Database and set rules to true";
+  // Load stock
+  onValue(stockRef, (snapshot) => {
+    stock = snapshot.val() || {};
+    renderStock();
   });
 
-  onValue(ref(db, 'bookings'), (snapshot) => {
-    bookings = snapshot.val() || [];
+  // Load bookings
+  onValue(bookingsRef, (snapshot) => {
+    bookings = snapshot.val() || {};
     renderBookings();
   });
 
-  function showApp(){
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('mainApp').style.display = 'block';
+  function renderStock() {
+    const list = document.getElementById('stockList');
+    list.innerHTML = '';
+    for(let id in stock) {
+      list.innerHTML += `<div class="item"><span>${stock[id].name}</span><span>Qty: ${stock[id].qty}</span></div>`;
+    }
   }
 
-  function createDefaultStock() {
-    equipment = []; let id = 1;
-    allItems.forEach(name => {
-      let category = cateringItems.includes(name) ? "Catering" : eventItems.includes(name) ? "Event" : "Deco";
-      equipment.push({id: id++, name, category, total: 100, out: 0});
-    });
-    saveAll();
+  function renderBookings() {
+    const list = document.getElementById('bookingsList');
+    list.innerHTML = '';
+    if(Object.keys(bookings).length === 0) {
+      list.innerHTML = 'No active bookings';
+      return;
+    }
+    for(let id in bookings) {
+      list.innerHTML += `<div class="booking"><b>${bookings[id].event}</b><br>${bookings[id].date}</div>`;
+    }
   }
 
-  function saveAll(){
-    set(ref(db, 'equipment'), equipment);
-    set(ref(db, 'bookings'), bookings);
+  window.addStock = () => {
+    const name = prompt("Item name:");
+    const qty = parseInt(prompt("Quantity to add:"));
+    if(name && qty) {
+      const newId = Date.now();
+      stock[newId] = {name, qty};
+      set(stockRef, stock);
+    }
   }
 
-  function renderInventory() { /* SAME AS BEFORE */ 
-    const container = document.getElementById('inventory');
-    const select = document.getElementById('existingItem');
-    container.innerHTML = ''; select.innerHTML = '<option value="">-- Add New Item --</option>';
-    ["Catering", "Event", "Deco"].forEach(cat => {
-      const items = equipment.filter(e => e.category === cat);
-      if(items.length === 0) return;
-      let tableRows = '';
-      items.forEach(item => {
-        const available = item.total - item.out;
-        select.innerHTML += `<option value="${item.id}">${item.name} - Current: ${item.total}</option>`;
-        tableRows += `<tr><td><b>${item.name}</b> <button class="edit-btn" onclick="requestEdit(${item.id})">Edit</button></td><td>Total: ${item.total}</td><td class="available">Avail: ${available}</td><td class="out">Out: ${item.out}</td><td><button class="btn" style="padding:5px; font-size:11px; background:orange;" onclick="manualOut(${item.id})">+1</button><button class="btn" style="padding:5px; font-size:11px; background:green;" onclick="manualIn(${item.id})">-1</button></td></tr>`;
-      });
-      container.innerHTML += `<div class="category"><div class="cat-header">${cat} - ${items.length} items</div><table><thead><tr><th>Item</th><th>Total</th><th>Avail</th><th>Out</th><th></th></tr></thead><tbody>${tableRows}</tbody></table></div>`;
-    });
+  window.newBooking = () => {
+    const event = prompt("Event name:");
+    const date = prompt("Event date:");
+    if(event && date) {
+      push(bookingsRef, {event, date});
+    }
   }
-
-  function renderBookings() { /* SAME */ 
-    const container = document.getElementById('activeBookings');
-    container.innerHTML = '';
-    if(bookings.length === 0) { container.innerHTML = '<p>No active bookings</p>'; return; }
-    bookings.sort((a,b) => new Date(a.date) - new Date(b.date)).forEach(b => {
-      const diffDays = Math.ceil((new Date(b.date) - new Date()) / (1000 * 60 * 60 * 24));
-      let status = diffDays < 0 ? 'Completed' : diffDays === 0 ? 'ONGOING TODAY' : `${diffDays} days to go`;
-      let className = diffDays < 0 ? 'done' : diffDays === 0 ? 'ongoing' : 'pending';
-      container.innerHTML += `<div class="booking-card ${className}" onclick="viewBookingDoc(${b.id})"><h3>${b.eventName}</h3><p><b>Client:</b> ${b.client}</p><p><b>Date:</b> ${b.date}</p><p class="countdown">${status}</p></div>`;
-    });
-  }
-
-  function viewBookingDoc(id) {
-    const b = bookings.find(x => x.id === id);
-    let itemsRows = ''; b.items.forEach((i, index) => { itemsRows += `<tr><td>${index+1}</td><td>${i.name}</td><td>${i.qty}</td></tr>`; });
-    
-    // USE YOUR UPLOADED LOGO
-    document.getElementById('docContent').innerHTML = `
-      <div class="doc-header">
-        <img src="attachment://0" class="doc-logo-img">
-        <p>Narok, Kenya | Tel: 07XX XXX</p>
-        <div class="doc-title">EQUIPMENT BOOKING SLIP</div>
-      </div>
-      <div class="doc-info"><p><b>Client:</b> ${b.client}</p><p><b>Event:</b> ${b.eventName}</p><p><b>Date:</b> ${b.date}</p><p><b>ID:</b> #${b.id}</p></div>
-      <table class="doc-table"><thead><tr><th>#</th><th>Item</th><th>Qty</th></tr></thead><tbody>${itemsRows}</tbody></table>
-      <p><b>Notes:</b> All items must be returned in good condition after event.</p>`;
-    openModal('docModal');
-  }
-
-  function renderBookingForm() { /* SAME */ 
-    const container = document.getElementById('bookingForm'); container.innerHTML = '';
-    ["Catering", "Event", "Deco"].forEach(cat => {
-      const items = equipment.filter(e => e.category === cat && e.total > 0);
-      if(items.length === 0) return;
-      let cards = ''; items.forEach(item => {
-        const available = item.total - item.out;
-        cards += `<div class="booking-item"><div style="display:flex; justify-content:space-between;"><b>${item.name}</b><span>Avail: ${available}</span></div><label>Qty Needed</label><input type="number" id="qty_${item.id}" min="0" max="${available}"></div>`;
-      });
-      container.innerHTML += `<div class="category"><div class="cat-header">${cat}</div>${cards}</div>`;
-    });
-  }
-
-  function submitBooking() { /* SAME */ 
-    const client = document.getElementById('clientName').value; const event = document.getElementById('eventName').value; const date = document.getElementById('eventDate').value;
-    const msgDiv = document.getElementById('bookingMessage'); msgDiv.innerHTML = '';
-    if(!client ||!event ||!date) { msgDiv.innerHTML = '<div class="alert alert-error">Fill all details</div>'; return; }
-    let bookedItems = []; let hasError = false;
-    equipment.forEach(item => {
-      const input = document.getElementById(`qty_${item.id}`);
-      if(input) { const requested = parseInt(input.value) || 0; const available = item.total - item.out;
-        if(requested > available) { hasError = true; msgDiv.innerHTML += `<div class="alert alert-error">Not enough ${item.name}</div>`; }
-        if(requested > 0) { item.out += requested; bookedItems.push({id:item.id, name:item.name, qty:requested}); }
-      }
-    });
-    if(!hasError) { bookings.push({id: Date.now(), client, eventName:event, date, items:bookedItems}); msgDiv.innerHTML = `<div class="alert alert-success">Booking saved!</div>`; setTimeout(() => closeModal('bookingModal'), 1200); }
-    saveAll();
-  }
-
-  function addEquipment() { /* SAME */ 
-    const name = document.getElementById('itemName').value; const category = document.getElementById('itemCategory').value; const qty = parseInt(document.getElementById('itemQty').value) || 0; const existingId = document.getElementById('existingItem').value;
-    if(!name ||!category || qty < 1) { alert('Fill all fields'); return; }
-    if(existingId) equipment.find(e => e.id == existingId).total += qty;
-    else equipment.push({id: Date.now(), name, category, total: qty, out: 0});
-    closeModal('addStockModal'); saveAll();
-  }
-
-  window.requestEdit = function(id) { document.getElementById('editItemId').value = id; document.getElementById('pinInput').value = ''; openModal('editPinModal'); }
-  window.checkPin = function() { if(document.getElementById('pinInput').value === PIN) { const id = document.getElementById('editItemId').value; const item = equipment.find(e => e.id == id); document.getElementById('editItemLabel').innerText = `Editing: ${item.name}`; document.getElementById('newTotalQty').value = item.total; closeModal('editPinModal'); openModal('editQtyModal'); } else document.getElementById('pinError').innerText = 'Wrong PIN'; }
-  window.saveEditedQty = function() { const id = document.getElementById('editItemId').value; const newQty = parseInt(document.getElementById('newTotalQty').value) || 0; const item = equipment.find(e => e.id == id); if(newQty < item.out) { alert(`Cannot set below ${item.out}`); return; } item.total = newQty; closeModal('editQtyModal'); saveAll(); }
-  window.manualOut = function(id){ let item = equipment.find(e => e.id === id); if(item.out < item.total) item.out++; saveAll(); }
-  window.manualIn = function(id){ let item = equipment.find(e => e.id === id); if(item.out > 0) item.out--; saveAll(); }
-  window.openModal = function(id) { document.getElementById(id).style.display = 'flex'; if(id === 'bookingModal') renderBookingForm(); }
-  window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
 </script>
+
 </body>
-   </html>
+</html>
