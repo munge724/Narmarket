@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FLAVA CATERING | Cloud Sync</title>
 <style>
+  /* SAME CSS AS BEFORE */
     * { margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif; }
   body { background:#f4f4f4; }
   header { background:#8B0000; color:#fff; padding:20px; text-align:center; }
@@ -40,7 +41,8 @@
   .close { float:right; font-size:28px; cursor:pointer; color:#8B0000; }
   .alert { padding:10px; margin:10px 0; border-radius:5px; } .alert-error { background:#ffdddd; color:red; } .alert-success { background:#ddffdd; color:green; }
   .edit-btn { background:#007BFF; color:#fff; border:none; padding:4px 8px; font-size:11px; border-radius:4px; cursor:pointer; margin-left:5px; }
-  @media print { body * { visibility: hidden; } .doc-modal, .doc-modal * { visibility: visible; } .doc-modal { position: absolute; left: 0; top: 0; width:100%; } .no-print { display:none; } }
+  #loading { text-align:center; padding:50px; font-size:18px; color:#8B0000; }
+  @media print { body * { visibility: hidden; } .doc-modal, .doc-modal * { visibility: visible; } .doc-modal { position: absolute; left: 0; top: 0; width:100%; } .no-print { display:none; }
 </style>
 </head>
 <body>
@@ -48,15 +50,18 @@
 <header><h1>FLAVA CATERING</h1><p>Cloud Sync - All Devices</p></header>
 
 <div class="container">
-  <div class="top-bar">
-    <button class="btn" onclick="openModal('addStockModal')">+ Add / Restock</button>
-    <button class="btn btn-green" onclick="openModal('bookingModal')">+ New Event</button>
+  <div id="loading">Connecting to Cloud...</div>
+  <div id="mainApp" style="display:none;">
+    <div class="top-bar">
+      <button class="btn" onclick="openModal('addStockModal')">+ Add / Restock</button>
+      <button class="btn btn-green" onclick="openModal('bookingModal')">+ New Event</button>
+    </div>
+    <h2>Active Bookings - Click to View</h2><div id="activeBookings"></div>
+    <h2 style="margin-top:30px;">Current Stock</h2><div id="inventory"></div>
   </div>
-  <h2>Active Bookings - Click to View</h2><div id="activeBookings"></div>
-  <h2 style="margin-top:30px;">Current Stock</h2><div id="inventory"></div>
 </div>
 
-<!-- MODALS -->
+<!-- MODALS SAME AS BEFORE -->
 <div class="modal" id="addStockModal"><div class="modal-content"><span class="close" onclick="closeModal('addStockModal')">&times;</span><h2>Add New Item or Restock</h2><label>Select Existing Item</label><select id="existingItem"></select><label>Category</label><select id="itemCategory"><option value="">Select</option><option>Catering</option><option>Event</option><option>Deco</option></select><label>Item Name</label><input type="text" id="itemName"><label>Qty to Add</label><input type="number" id="itemQty" min="1"><button class="btn" onclick="addEquipment()">Save to Stock</button></div></div>
 <div class="modal" id="editPinModal"><div class="modal-content"><span class="close" onclick="closeModal('editPinModal')">&times;</span><h2>Enter PIN to Edit Stock</h2><input type="password" id="pinInput"><input type="hidden" id="editItemId"><button class="btn" onclick="checkPin()">Unlock</button><div id="pinError" style="color:red; margin-top:10px;"></div></div></div>
 <div class="modal" id="editQtyModal"><div class="modal-content"><span class="close" onclick="closeModal('editQtyModal')">&times;</span><h2>Edit Total Stock</h2><p id="editItemLabel"></p><input type="number" id="newTotalQty" min="0"><button class="btn btn-green" onclick="saveEditedQty()">Save Changes</button></div></div>
@@ -67,16 +72,13 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-  // YOUR FIREBASE CONFIG - CONNECTED
   const firebaseConfig = {
     apiKey: "AIzaSyDiJslY_7xcSSxN-2V0jGhinUrrSUAhxLg",
     authDomain: "simes1-abedd.firebaseapp.com",
-    databaseURL: "https://simes1-abedd-default-rtdb.firebaseio.com", // Realtime DB URL
+    databaseURL: "https://simes1-abedd-default-rtdb.firebaseio.com",
     projectId: "simes1-abedd",
     storageBucket: "simes1-abedd.firebasestorage.app",
-    messagingSenderId: "15118142491",
-    appId: "1:15118142491:web:177e2fe80553fdf2bfbcbe",
-    measurementId: "G-PHC4X8NSJ3"
+    appId: "1:15118142491:web:177e2fe80553fdf2bfbcbe"
   };
 
   const app = initializeApp(firebaseConfig);
@@ -95,12 +97,20 @@
   onValue(ref(db, 'equipment'), (snapshot) => {
     equipment = snapshot.val() || [];
     if(equipment.length === 0) createDefaultStock();
-    else renderInventory();
+    else { renderInventory(); showApp(); }
+  }, (error) => {
+    document.getElementById('loading').innerHTML = "Firebase Error: " + error.message + "<br>Please create Realtime Database and set rules to true";
   });
+
   onValue(ref(db, 'bookings'), (snapshot) => {
     bookings = snapshot.val() || [];
     renderBookings();
   });
+
+  function showApp(){
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'block';
+  }
 
   function createDefaultStock() {
     equipment = []; let id = 1;
@@ -116,7 +126,7 @@
     set(ref(db, 'bookings'), bookings);
   }
 
-  function renderInventory() {
+  function renderInventory() { /* SAME AS BEFORE */ 
     const container = document.getElementById('inventory');
     const select = document.getElementById('existingItem');
     container.innerHTML = ''; select.innerHTML = '<option value="">-- Add New Item --</option>';
@@ -133,7 +143,7 @@
     });
   }
 
-  function renderBookings() {
+  function renderBookings() { /* SAME */ 
     const container = document.getElementById('activeBookings');
     container.innerHTML = '';
     if(bookings.length === 0) { container.innerHTML = '<p>No active bookings</p>'; return; }
@@ -149,7 +159,7 @@
     const b = bookings.find(x => x.id === id);
     let itemsRows = ''; b.items.forEach((i, index) => { itemsRows += `<tr><td>${index+1}</td><td>${i.name}</td><td>${i.qty}</td></tr>`; });
     
-    // USING YOUR UPLOADED LOGO
+    // USE YOUR UPLOADED LOGO
     document.getElementById('docContent').innerHTML = `
       <div class="doc-header">
         <img src="attachment://0" class="doc-logo-img">
@@ -162,7 +172,7 @@
     openModal('docModal');
   }
 
-  function renderBookingForm() {
+  function renderBookingForm() { /* SAME */ 
     const container = document.getElementById('bookingForm'); container.innerHTML = '';
     ["Catering", "Event", "Deco"].forEach(cat => {
       const items = equipment.filter(e => e.category === cat && e.total > 0);
@@ -175,7 +185,7 @@
     });
   }
 
-  function submitBooking() {
+  function submitBooking() { /* SAME */ 
     const client = document.getElementById('clientName').value; const event = document.getElementById('eventName').value; const date = document.getElementById('eventDate').value;
     const msgDiv = document.getElementById('bookingMessage'); msgDiv.innerHTML = '';
     if(!client ||!event ||!date) { msgDiv.innerHTML = '<div class="alert alert-error">Fill all details</div>'; return; }
@@ -191,7 +201,7 @@
     saveAll();
   }
 
-  function addEquipment() {
+  function addEquipment() { /* SAME */ 
     const name = document.getElementById('itemName').value; const category = document.getElementById('itemCategory').value; const qty = parseInt(document.getElementById('itemQty').value) || 0; const existingId = document.getElementById('existingItem').value;
     if(!name ||!category || qty < 1) { alert('Fill all fields'); return; }
     if(existingId) equipment.find(e => e.id == existingId).total += qty;
@@ -199,13 +209,13 @@
     closeModal('addStockModal'); saveAll();
   }
 
-  function requestEdit(id) { document.getElementById('editItemId').value = id; document.getElementById('pinInput').value = ''; openModal('editPinModal'); }
-  function checkPin() { if(document.getElementById('pinInput').value === PIN) { const id = document.getElementById('editItemId').value; const item = equipment.find(e => e.id == id); document.getElementById('editItemLabel').innerText = `Editing: ${item.name}`; document.getElementById('newTotalQty').value = item.total; closeModal('editPinModal'); openModal('editQtyModal'); } else document.getElementById('pinError').innerText = 'Wrong PIN'; }
-  function saveEditedQty() { const id = document.getElementById('editItemId').value; const newQty = parseInt(document.getElementById('newTotalQty').value) || 0; const item = equipment.find(e => e.id == id); if(newQty < item.out) { alert(`Cannot set below ${item.out}`); return; } item.total = newQty; closeModal('editQtyModal'); saveAll(); }
-  function manualOut(id){ let item = equipment.find(e => e.id === id); if(item.out < item.total) item.out++; saveAll(); }
-  function manualIn(id){ let item = equipment.find(e => e.id === id); if(item.out > 0) item.out--; saveAll(); }
-  function openModal(id) { document.getElementById(id).style.display = 'flex'; if(id === 'bookingModal') renderBookingForm(); }
-  function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+  window.requestEdit = function(id) { document.getElementById('editItemId').value = id; document.getElementById('pinInput').value = ''; openModal('editPinModal'); }
+  window.checkPin = function() { if(document.getElementById('pinInput').value === PIN) { const id = document.getElementById('editItemId').value; const item = equipment.find(e => e.id == id); document.getElementById('editItemLabel').innerText = `Editing: ${item.name}`; document.getElementById('newTotalQty').value = item.total; closeModal('editPinModal'); openModal('editQtyModal'); } else document.getElementById('pinError').innerText = 'Wrong PIN'; }
+  window.saveEditedQty = function() { const id = document.getElementById('editItemId').value; const newQty = parseInt(document.getElementById('newTotalQty').value) || 0; const item = equipment.find(e => e.id == id); if(newQty < item.out) { alert(`Cannot set below ${item.out}`); return; } item.total = newQty; closeModal('editQtyModal'); saveAll(); }
+  window.manualOut = function(id){ let item = equipment.find(e => e.id === id); if(item.out < item.total) item.out++; saveAll(); }
+  window.manualIn = function(id){ let item = equipment.find(e => e.id === id); if(item.out > 0) item.out--; saveAll(); }
+  window.openModal = function(id) { document.getElementById(id).style.display = 'flex'; if(id === 'bookingModal') renderBookingForm(); }
+  window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
 </script>
 </body>
-</html>
+   </html>
