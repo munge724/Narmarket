@@ -11,7 +11,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   :root { --red:#FF0000; --white:#FFFFFF; --green:#228B22; --blue:#0066CC; --gold:#DAA520; --whatsapp:#25D366; }
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', Arial, sans-serif; }
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', Arial, sans-serif; }
   body { background: var(--white); overflow:hidden; }
   #splash { position:fixed; top:0; left:0; width:100%; height:100%; background:var(--white); display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:9999; animation: fadeOut 0.5s ease 3s forwards; }
   #splash h1 { color:var(--red); font-size:48px; font-weight:700; animation: zoomInOut 3s ease-in-out; letter-spacing:2px; }
@@ -21,86 +21,90 @@
   header { background:var(--red); color:var(--white); padding:20px; text-align:center; box-shadow:0 4px 10px rgba(255,0,0,0.3); }
   header img { height:55px; background:var(--white); padding:6px; border-radius:10px; margin-bottom:8px; }
   header h1 { color:var(--white); font-size:20px; font-weight:700; letter-spacing:1px; }
-  .container { padding:20px; max-width:1000px; margin:auto; }
-  .top-bar { display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:25px; }
-  .tabs { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px; margin-bottom:20px; }
-  .tab-btn { background:#ddd; color:#333; padding:14px; border:none; border-radius:12px; cursor:pointer; font-weight:700; font-size:14px; transition:0.2s; }
-  .tab-btn.active { background:var(--red); color:var(--white); }
-  .btn { background:var(--red); color:var(--white); padding:16px; border:none; border-radius:15px; cursor:pointer; font-weight:700; font-size:16px; box-shadow:0 4px 10px rgba(255,0,0,0.3); transition:0.2s; width:100%; }
-  .btn:hover { background:#CC0000; transform:scale(1.02); }
-  .btn-approve { background:var(--green); }
-  .btn-approve:hover { background:#1E7E1E; }
-  .btn-cancel { background:#888; }
-  .btn-cancel:hover { background:#666; }
-  .btn-return { background:var(--blue); }
-  .btn-return:hover { background:#0055aa; }
-  .btn-whatsapp { background:var(--whatsapp); }
-  .btn-whatsapp:hover { background:#1EBE57; }
-  .category { background:var(--white); margin:20px 0; border-radius:15px; box-shadow:0 3px 12px rgba(0,0,0,0.1); overflow:hidden; }
-  .cat-header { color:var(--white); padding:16px; font-size:18px; font-weight:700; display:flex; justify-content:space-between; align-items:center; }
-  .cat-header.green { background:var(--green); }
-  .cat-header.blue { background:var(--blue); }
-  .cat-header.gold { background:var(--gold); color:#333; }
+ .container { padding:20px; max-width:1000px; margin:auto; }
+ .top-bar { display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:25px; }
+ .tabs { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px; margin-bottom:20px; }
+ .tab-btn { background:#ddd; color:#333; padding:14px; border:none; border-radius:12px; cursor:pointer; font-weight:700; font-size:14px; transition:0.2s; }
+ .tab-btn.active { background:var(--red); color:var(--white); }
+ .btn { background:var(--red); color:var(--white); padding:16px; border:none; border-radius:15px; cursor:pointer; font-weight:700; font-size:16px; box-shadow:0 4px 10px rgba(255,0,0,0.3); transition:0.2s; width:100%; }
+ .btn:hover { background:#CC0000; transform:scale(1.02); }
+ .btn-approve { background:var(--green); }
+ .btn-approve:hover { background:#1E7E1E; }
+ .btn-cancel { background:#888; }
+ .btn-cancel:hover { background:#666; }
+ .btn-return { background:var(--blue); }
+ .btn-return:hover { background:#0055aa; }
+ .btn-whatsapp { background:var(--whatsapp); }
+ .btn-whatsapp:hover { background:#1EBE57; }
+ .category { background:var(--white); margin:20px 0; border-radius:15px; box-shadow:0 3px 12px rgba(0,0,0,0.1); overflow:hidden; }
+ .cat-header { color:var(--white); padding:16px; font-size:18px; font-weight:700; display:flex; justify-content:space-between; align-items:center; }
+ .cat-header.green { background:var(--green); }
+ .cat-header.blue { background:var(--blue); }
+ .cat-header.gold { background:var(--gold); color:#333; }
   table { width:100%; border-collapse:collapse; table-layout:fixed; }
   th { background:#f8f8f8; padding:14px; text-align:left; font-size:14px; color:#333; font-weight:600; }
   td { padding:14px; border-bottom:1px solid #eee; font-size:15px; }
-  .available { color:var(--green); font-weight:600; } .out { color:var(--red); font-weight:600; }
+ .available { color:var(--green); font-weight:600; }.out { color:var(--red); font-weight:600; }
   input, select { width:100%; padding:14px; border:2px solid #ddd; border-radius:12px; font-size:15px; margin:8px 0 15px 0; }
   input:focus, select:focus { border-color:var(--red); outline:none; }
   label { font-weight:600; font-size:14px; color:#333; }
-  .booking-card { background:var(--white); border:3px solid #ddd; padding:18px; margin:15px 0; border-radius:15px; box-shadow:0 3px 10px rgba(0,0,0,0.1); }
-  .booking-card.pending { border-color:var(--gold); }
-  .booking-card.approved { border-color:var(--green); }
-  .booking-card.cancelled { border-color:#888; opacity:0.6; }
-  .booking-card.returned { border-color:var(--blue); opacity:0.7; }
-  .countdown { font-size:16px; font-weight:700; color:var(--red); margin-top:6px; }
-  .booking-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:15px; }
-  .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:1000; padding:20px; }
-  .modal-content { background:var(--white); padding:25px; border-radius:18px; width:95%; max-width:600px; max-height:90vh; overflow-y:auto; margin:10px auto; border:3px solid var(--red); }
-  .doc-modal { background:var(--white); padding:35px; width:95%; max-width:800px; border:4px solid var(--red); }
-  .doc-header { text-align:center; border-bottom:3px solid var(--red); padding-bottom:18px; margin-bottom:20px; }
-  .doc-logo-img { max-width:200px; margin-bottom:10px; }
-  .doc-title { font-size:22px; margin-top:10px; font-weight:700; color:var(--red); }
-  .doc-info { display:grid; grid-template-columns:1fr 1fr; gap:15px; padding:18px; background:#f8f8f8; border-radius:12px; border:2px solid #ddd; }
-  .close { float:right; font-size:30px; cursor:pointer; color:var(--red); font-weight:700; }
-  .alert { padding:14px; margin:14px 0; border-radius:12px; text-align:center; font-weight:600; }
-  .alert-error { background:#ffe0e0; color:var(--red); }
-  .alert-success { background:#e8ffe8; color:var(--green); font-size:16px; }
+ .booking-card { background:var(--white); border:3px solid #ddd; padding:18px; margin:15px 0; border-radius:15px; box-shadow:0 3px 10px rgba(0,0,0,0.1); }
+ .booking-card.pending { border-color:var(--gold); }
+ .booking-card.approved { border-color:var(--green); }
+ .booking-card.cancelled { border-color:#888; opacity:0.6; }
+ .booking-card.returned { border-color:var(--blue); opacity:0.7; }
+ .countdown { font-size:16px; font-weight:700; color:var(--red); margin-top:6px; }
+ .booking-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:15px; }
+ .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:1000; padding:20px; }
+ .modal-content { background:var(--white); padding:25px; border-radius:18px; width:95%; max-width:600px; max-height:90vh; overflow-y:auto; margin:10px auto; border:3px solid var(--red); }
+ .doc-modal { background:var(--white); padding:35px; width:95%; max-width:800px; border:4px solid var(--red); }
+ .doc-header { text-align:center; border-bottom:3px solid var(--red); padding-bottom:18px; margin-bottom:20px; }
+ .doc-logo-img { max-width:200px; margin-bottom:10px; }
+ .doc-title { font-size:22px; margin-top:10px; font-weight:700; color:var(--red); }
+ .doc-info { display:grid; grid-template-columns:1fr 1fr; gap:15px; padding:18px; background:#f8f8f8; border-radius:12px; border:2px solid #ddd; }
+ .close { float:right; font-size:30px; cursor:pointer; color:var(--red); font-weight:700; }
+ .alert { padding:14px; margin:14px 0; border-radius:12px; text-align:center; font-weight:600; }
+ .alert-error { background:#ffe0e0; color:var(--red); }
+ .alert-success { background:#e8ffe8; color:var(--green); font-size:16px; }
   #loading { text-align:center; padding:60px; font-size:18px; color:var(--red); font-weight:700; }
-  .doc-table { width:100%; border-collapse:collapse; margin:20px 0; table-layout:fixed; }
-  .doc-table th { background:var(--red); color:var(--white); padding:12px; font-weight:700; }
-  .doc-table td { border:2px solid #eee; padding:12px; }
-  .page { display:none; } .page.active { display:block; }
-  .back-btn { background:#888; }
-  @media print { .no-print { display:none; } }
-  @media print {
-    .doc-table, .doc-table tr, .doc-table td, .doc-table th { break-inside: avoid !important; }
-    .doc-table tr { page-break-inside: avoid !important; }
-    .doc-table { page-break-inside: auto !important; }
-    .doc-header, .doc-info { page-break-after: avoid !important; }
-    thead { display: table-header-group; }
-    tfoot { display: table-footer-group; }
-  }
-  .pdf-footer { position:fixed; bottom:18px; left:0; right:0; text-align:center; font-size:14px; font-weight:700; color:#444; }
-  .qty-edit { width:90px; display:inline-block; margin-right:10px; }
-  .name-edit { width:200px; display:inline-block; margin-right:10px; }
-  .pin-box { background:#f8f8f8; padding:18px; border-radius:12px; margin-bottom:18px; border:2px solid #ddd; }
-  .status-badge { padding:6px 12px; border-radius:20px; font-size:12px; font-weight:700; color:white; }
-  .status-pending { background:var(--gold); color:#333; }
-  .status-approved { background:var(--green); }
-  .status-cancelled { background:#888; }
-  .status-returned { background:var(--blue); }
+ .doc-table { width:100%; border-collapse:collapse; margin:20px 0; table-layout:fixed; }
+ .doc-table th { background:var(--red); color:var(--white); padding:12px; font-weight:700; }
+ .doc-table td { border:2px solid #eee; padding:12px; }
+ .page { display:none; }.page.active { display:block; }
+ .back-btn { background:#888; }
+ .edit-btn { background:var(--white); color:#333; border:none; padding:10px 16px; font-size:13px; border-radius:10px; cursor:pointer; font-weight:700; }
+ .add-item-btn { background:var(--white); color:#333; border:none; padding:8px 14px; font-size:13px; border-radius:10px; cursor:pointer; font-weight:700; margin-right:8px; }
 
-  /* Mobile-friendly PDF viewing */
+  @media print {.no-print { display:none; } }
+  @media print {
+   .doc-table { page-break-inside: auto; }
+   .doc-table tr { page-break-inside: avoid; }
+   .doc-header,.doc-info { page-break-after: avoid; }
+    thead { display: table-header-group; }
+  }
+ .pdf-footer { text-align:center; font-size:14px; font-weight:700; color:#444; margin-top:30px; padding-top:10px; border-top:2px solid #ddd; }
+ .qty-edit { width:90px; display:inline-block; margin-right:10px; }
+ .name-edit { width:200px; display:inline-block; margin-right:10px; }
+ .pin-box { background:#f8f8f8; padding:18px; border-radius:12px; margin-bottom:18px; border:2px solid #ddd; }
+ .status-badge { padding:6px 12px; border-radius:20px; font-size:12px; font-weight:700; color:white; }
+ .status-pending { background:var(--gold); color:#333; }
+ .status-approved { background:var(--green); }
+ .status-cancelled { background:#888; }
+ .status-returned { background:var(--blue); }
+
+  /* FIX: Remove scroll for PDF */
+  #docContent{
+    max-height: none;
+    overflow-y: visible;
+  }
+
   @media (max-width: 600px) {
-    .modal { padding: 10px; align-items: flex-start; }
-    .doc-modal { padding: 14px; max-width: 100%; width: 100%; }
-    .doc-header { padding-bottom: 12px; margin-bottom: 12px; }
-    .doc-title { font-size: 18px; }
-    .doc-info { grid-template-columns: 1fr; padding: 12px; }
-    .doc-table th, .doc-table td { padding: 10px; font-size: 13px; }
-    #docContent { max-height: 70vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-    .pdf-footer { position: static; margin-top: 10px; }
+   .modal { padding: 10px; align-items: flex-start; }
+   .doc-modal { padding: 14px; max-width: 100%; width: 100%; }
+   .doc-header { padding-bottom: 12px; margin-bottom: 12px; }
+   .doc-title { font-size: 18px; }
+   .doc-info { grid-template-columns: 1fr; padding: 12px; }
+   .doc-table th,.doc-table td { padding: 10px; font-size: 13px; }
   }
 </style>
 </head>
@@ -133,14 +137,12 @@
   <div id="eventsPage" class="page">
     <button class="btn back-btn" onclick="window.showPage('dashboardPage')">← Back to Dashboard</button>
     <h2 style="color:var(--red); margin:20px 0; font-size:22px; font-weight:700;">Events</h2>
-
     <div class="tabs">
       <button class="tab-btn active" onclick="window.filterEvents('pending', this)">Pending</button>
       <button class="tab-btn" onclick="window.filterEvents('ongoing', this)">Ongoing</button>
       <button class="tab-btn" onclick="window.filterEvents('done', this)">Done</button>
       <button class="tab-btn" onclick="window.filterEvents('all', this)">All</button>
     </div>
-
     <div id="activeBookings"></div>
   </div>
 </div>
@@ -156,26 +158,14 @@
     <span class="close" onclick="window.closeModal('bookingModal')">&times;</span>
     <h2 style="color:var(--red); margin-bottom:15px;">New Event Booking</h2>
     <div id="bookingMessage"></div>
-
-    <label>Client Name</label>
-    <input type="text" id="clientName">
-
-    <label>Client WhatsApp</label>
-    <input type="text" id="clientPhone" placeholder="0712345678">
-    <small style="color:#666;">Format: 0712345678 or 254712345678</small>
-
-    <label>Event Name</label>
-    <input type="text" id="eventName">
-
-    <label>Event Date</label>
-    <input type="date" id="eventDate">
-
-    <h3 style="color:var(--red); margin-top:18px; margin-bottom:10px; font-size:16px;>Prepared By (PDF Details)</h3>
-    <label>Prepared By</label>
-    <input type="text" id="preparedBy" placeholder="Staff Name">
-    <label>Phone</label>
-    <input type="text" id="phoneNo" placeholder="0741437977">
-
+    <label>Client Name</label><input type="text" id="clientName">
+    <label>Client WhatsApp</label><input type="text" id="clientPhone" placeholder="0712345678">
+    <small style="color:#666; display:block;">Format: 0712345678 or 254712345678</small>
+    <label>Event Name</label><input type="text" id="eventName">
+    <label>Event Date</label><input type="date" id="eventDate">
+    <h3 style="color:var(--red); margin-top:18px; margin-bottom:10px; font-size:16px;">Prepared By (PDF Details)</h3>
+    <label>Prepared By</label><input type="text" id="preparedBy" placeholder="Staff Name">
+    <label>Phone</label><input type="text" id="phoneNo" placeholder="0741437977">
     <div id="bookingForm"></div>
     <button class="btn" onclick="window.submitBooking()">Submit Booking</button>
   </div>
@@ -185,8 +175,8 @@
   <div class="modal-content">
     <span class="close" onclick="window.closeModal('pdfSignModal')">&times;</span>
     <h2 style="color:var(--red); margin-bottom:15px;">PDF Details</h2>
-    <label>Prepared By</label><input type="text" id="preparedBy" placeholder="Staff Name">
-    <label>Phone</label><input type="text" id="phoneNo" placeholder="0741437977">
+    <label>Prepared By</label><input type="text" id="preparedBy2" placeholder="Staff Name">
+    <label>Phone</label><input type="text" id="phoneNo2" placeholder="0741437977">
     <button class="btn" onclick="window.downloadPDF()">Download PDF</button>
   </div>
 </div>
@@ -260,7 +250,6 @@
       {name:"Event", color:"blue"},
       {name:"Deco", color:"gold"}
     ];
-
     cats.forEach(cat => {
       let tableRows = '';
       for(let id in equipment){
@@ -297,7 +286,6 @@
       currentEditCategory = document.getElementById('editCatName').value;
       currentAction = document.getElementById('actionType').value;
       window.closeModal('editPinModal');
-
       if(currentAction === 'edit') window.openCategoryEdit(currentEditCategory);
       else if(currentAction === 'add') {
         document.getElementById('addCatName').value = currentEditCategory;
@@ -360,46 +348,40 @@
     const container = document.getElementById('activeBookings');
     container.innerHTML = '';
     if(Object.keys(bookings).length === 0) { container.innerHTML = '<p style="text-align:center; color:#888;">No events yet</p>'; return; }
-
     const today = new Date();
     const sortedBookings = Object.entries(bookings).sort((a,b) => new Date(b[1].date) - new Date(a[1].date));
-
     let count = 0;
     sortedBookings.forEach(([id, b]) => {
       const eventDate = new Date(b.date);
       const diffDays = Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24));
       const isOngoing = b.status === 'approved';
       const isDone = b.status === 'returned' || b.status === 'cancelled';
-
       if(currentFilter === 'pending' && b.status!== 'pending') return;
       if(currentFilter === 'ongoing' &&!isOngoing) return;
       if(currentFilter === 'done' &&!isDone) return;
-
       count++;
-
-      let status = '';
       let statusClass = '';
+      let status = '';
       if(b.status === 'cancelled') { status='CANCELLED'; statusClass='status-cancelled'; }
       else if(b.status === 'returned') { status='RETURNED - DONE'; statusClass='status-returned'; }
-      else if(b.status === 'approved') { status= diffDays < 0? 'ONGOING' : diffDays === 0? 'ONGOING TODAY' : `${diffDays} days to go`; statusClass='status-approved'; }
-      else { status= diffDays < 0? 'PENDING - DATE PASSED' : diffDays === 0? 'PENDING - TODAY' : `PENDING - ${diffDays} days to go`; statusClass='status-pending'; }
-
+      else if(b.status === 'approved') {
+        status = diffDays < 0? 'ONGOING' : diffDays === 0? 'ONGOING TODAY' : `${diffDays} days to go`;
+        statusClass='status-approved';
+      } else {
+        status = diffDays < 0? 'PENDING - DATE PASSED' : diffDays === 0? 'PENDING - TODAY' : `PENDING - ${diffDays} days to go`;
+        statusClass='status-pending';
+      }
       let actionButtons = '';
       if(b.status === 'pending') {
-        actionButtons = `
-          <div class="booking-actions">
-            <button class="btn btn-approve" onclick="window.approveBooking('${id}')">✓ Approve</button>
-            <button class="btn btn-cancel" onclick="window.cancelBooking('${id}')">✕ Cancel</button>
-          </div>`;
+        actionButtons = `<div class="booking-actions"><button class="btn btn-approve" onclick="window.approveBooking('${id}')">✓ Approve</button><button class="btn btn-cancel" onclick="window.cancelBooking('${id}')">✕ Cancel</button></div>`;
       } else if(b.status === 'approved') {
         actionButtons = `<button class="btn btn-return" onclick="window.returnBooking('${id}')">↩ Return Items</button>`;
       }
-
       container.innerHTML += `
       <div class="booking-card ${b.status}">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
           <h3 style="color:var(--red); font-size:18px;">${b.eventName}</h3>
-          <span class="status-badge ${statusClass}">${b.status.toUpperCase()}</span>
+          <span class="status-badge ${statusClass}">${String(b.status || '').toUpperCase()}</span>
         </div>
         <p><b>Client:</b> ${b.client}</p>
         <p><b>WhatsApp:</b> ${b.phone || 'N/A'}</p>
@@ -410,29 +392,22 @@
         ${actionButtons}
       </div>`;
     });
-
     if(count === 0) container.innerHTML = '<p style="text-align:center; color:#888;">No events in this category</p>';
   }
 
   window.sendManualWhatsApp = function(id) {
     const b = bookings[id];
-    const message = `Hi ${b.client}, \n\nThis is Flava Catering regarding your event: "${b.eventName}" on ${b.date}.\n\nThank you!`;
+    const message = `Hi ${b.client}! 🎉\n\nYour booking for *"${b.eventName}"* on *${b.date}* has been *APPROVED* ✅\n\nFlava Catering will contact you soon.\nThank you for choosing us!`;
     sendWhatsApp(b.phone, message);
   }
 
   window.approveBooking = function(id) {
     if(!confirm('Approve this booking? Stock will be marked as OUT and WhatsApp will open.')) return;
     const b = bookings[id];
-
     for(let itemId in (b.items || {})) equipment[itemId].out += b.items[itemId].qty;
     update(ref(db, 'bookings/' + id), {status: 'approved'});
     set(ref(db, 'equipment'), equipment);
-
-    const name = b.client || 'Client';
-    const message =
-      `Dear ${name}, your Event Booking has Being Approved. ` +
-      `You Will Be Contacted Soon. Thank you for Choosing Flava.`;
-
+    const message = `Hi ${b.client}! 🎉\n\nYour booking for *"${b.eventName}"* on *${b.date}* has been *APPROVED* ✅\n\nFlava Catering will contact you soon.\nThank you for choosing us!`;
     sendWhatsApp(b.phone, message);
   }
 
@@ -440,66 +415,61 @@
     if(!confirm('Cancel this booking? WhatsApp will open to notify client.')) return;
     const b = bookings[id];
     update(ref(db, 'bookings/' + id), {status: 'cancelled'});
-
-    const name = b.client || 'Client';
-    const message =
-      `Dear ${name}, your Event Booking has been Cancelled. ` +
-      `Thank you for choosing Flava.`;
-
+    const message = `Dear ${b.client}, your Event Booking for "${b.eventName}" has been Cancelled.\nThank you for choosing Flava.`;
     sendWhatsApp(b.phone, message);
   }
 
   window.returnBooking = function(id) {
     if(!confirm('Return all items from this event? Stock will be marked as IN and event will move to Done.')) return;
     const b = bookings[id];
-
     for(let itemId in (b.items || {})) {
       equipment[itemId].out -= b.items[itemId].qty;
       if(equipment[itemId].out < 0) equipment[itemId].out = 0;
     }
     update(ref(db, 'bookings/' + id), {status: 'returned'});
     set(ref(db, 'equipment'), equipment);
-
-    const name = b.client || 'Client';
-    const message =
-      `Dear ${name}, All Equipment Booked Were Well Received Back in Total and Save. ` +
-      `Thank you for choosing Flava.`;
-
+    const message = `Dear ${b.client}, All Equipment for "${b.eventName}" were received back in good condition.\nThank you for choosing Flava.`;
     sendWhatsApp(b.phone, message);
     alert('Items Returned! Stock updated and event moved to Done.');
   }
 
-  // Events site: view + download only (uses saved preparedBy/preparedPhone)
   window.preparePDF = function(id) {
     currentDocId = id;
     window.viewBookingDoc(currentDocId);
   }
 
+  // FIXED PDF DOWNLOAD - CLONES CONTENT SO IT CANT BE BLANK
   window.downloadPDF = function() {
     if(!currentDocId) { alert('Open View PDF first'); return; }
     const b = bookings[currentDocId];
     if(!b) { alert('Booking not found'); return; }
 
-    window.viewBookingDoc(currentDocId);
-
-    const docModal = document.getElementById('docModal');
     const element = document.getElementById('docContent');
-    if(!docModal || !element) { alert('PDF content not ready'); return; }
+    if(!element) { alert('PDF content not ready'); return; }
 
-    requestAnimationFrame(() => {
-      docModal.style.display = 'flex';
-      const opt = {
-        margin: 0.35,
-        filename: `Flava_Booking_${b.client}_${b.date}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 3, useCORS: true, backgroundColor: '#ffffff' },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['css', 'legacy'], avoid: ['tr'] }
-      };
-      html2pdf().set(opt).from(element).save().catch(err => {
-        console.error(err);
-        alert('PDF generation failed. Check console for details.');
-      });
+    // Clone to avoid modal/overflow issues
+    const clonedElement = element.cloneNode(true);
+    const wrapper = document.createElement('div');
+    wrapper.style.padding = '20px';
+    wrapper.style.background = '#fff';
+    wrapper.appendChild(clonedElement);
+
+    const opt = {
+      margin: 0.25,
+      filename: `Flava_Booking_${b.client}_${b.date}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: ['css', 'legacy'] }
+    };
+
+    document.body.appendChild(wrapper);
+    html2pdf().set(opt).from(wrapper).save().then(() => {
+      document.body.removeChild(wrapper);
+    }).catch(err => {
+      console.error(err);
+      alert('PDF generation failed');
+      document.body.removeChild(wrapper);
     });
   }
 
@@ -507,26 +477,20 @@
     const b = bookings[id];
     const docContent = document.getElementById('docContent');
     const docModal = document.getElementById('docModal');
-
     if(!b) {
       if(docContent) docContent.innerHTML = `<p style="color:var(--red); font-weight:700;">Booking not found</p>`;
       if(docModal) docModal.style.display = 'flex';
       return;
     }
-
     const items = b.items || {};
     let itemsRows = '';
     let count = 1;
     for(let itemId in items){
       itemsRows += `<tr><td>${count++}</td><td>${items[itemId].name || '-'}</td><td>${items[itemId].qty || 0}</td></tr>`;
     }
-    if(!itemsRows){
-      itemsRows = `<tr><td colspan="3" style="text-align:center; padding:14px; color:#888; font-weight:700;">No items found for this booking</td></tr>`;
-    }
-
+    if(!itemsRows){ itemsRows = `<tr><td colspan="3" style="text-align:center; padding:14px; color:#888; font-weight:700;">No items found for this booking</td></tr>`; }
     const prepared = b.preparedBy || '-';
     const phone = b.preparedPhone || '-';
-
     if(docContent){
       docContent.innerHTML = `
         <div class="doc-header">
@@ -535,52 +499,38 @@
           <div class="doc-title">EQUIPMENT BOOKING SLIP</div>
           <p style="margin-top:10px; font-weight:600;">Status: ${String(b.status || '').toUpperCase()}</p>
         </div>
-
         <div class="doc-info">
           <p><b>Client:</b> ${b.client || '-'}</p>
           <p><b>WhatsApp:</b> ${b.phone || 'N/A'}</p>
           <p><b>Event:</b> ${b.eventName || '-'}</p>
           <p><b>Date:</b> ${b.date || '-'}</p>
         </div>
-
         <table class="doc-table">
-          <thead>
-            <tr><th>#</th><th>Item</th><th>Qty</th></tr>
-          </thead>
+          <thead><tr><th>#</th><th>Item</th><th>Qty</th></tr></thead>
           <tbody>${itemsRows}</tbody>
         </table>
-
-        <div style="margin-top:40px; font-size:16px; padding-bottom:60px;">
+        <div style="margin-top:40px; font-size:16px;">
           <p><b>Prepared By:</b> ${prepared}</p>
           <p><b>Phone:</b> ${phone}</p>
         </div>
-
         <p style="margin-top:20px; font-style:italic; color:#555;"><b>Notes:</b> All items must be returned in good condition after event.</p>
         <div class="pdf-footer">FLAVA NAROK</div>
       `;
     }
-
     if(docModal) docModal.style.display = 'flex';
   }
 
   function renderBookingForm() {
     const wrap = document.getElementById('bookingForm');
     if(!wrap) return;
-
-    const cats = [
-      { name: 'Catering', order: 1 },
-      { name: 'Event', order: 2 },
-      { name: 'Deco', order: 3 }
-    ];
-
+    const cats = [{ name: 'Catering' }, { name: 'Event' }, { name: 'Deco' }];
     const itemsByCat = {};
     cats.forEach(c => itemsByCat[c.name] = []);
-
     for (let id in equipment) {
       const item = equipment[id];
       if (!item) continue;
       if (!itemsByCat[item.category]) continue;
-      const available = Math.max(0, (item.total || 0) - (item.out || 0));
+          const available = Math.max(0, (item.total || 0) - (item.out || 0));
       itemsByCat[item.category].push({ id, name: item.name, available, total: item.total || 0 });
     }
 
@@ -600,7 +550,7 @@
       list.forEach(it => {
         const maxAvail = it.available;
         const disabled = maxAvail <= 0;
-        const safeMax = maxAvail > 0 ? maxAvail : 0;
+        const safeMax = maxAvail > 0? maxAvail : 0;
 
         html += `
           <div class="item-pick">
@@ -610,7 +560,7 @@
                   <input
                     type="checkbox"
                     id="pick_${it.id}"
-                    ${disabled ? 'disabled' : ''}
+                    ${disabled? 'disabled' : ''}
                     onchange="window.togglePick('${it.id}', ${safeMax})"
                   >
                   <div>
@@ -629,7 +579,7 @@
                 min="0"
                 max="${safeMax}"
                 value="0"
-                ${disabled ? 'disabled' : ''}
+                ${disabled? 'disabled' : ''}
                 onchange="window.ensureQtyWithin('${it.id}', ${safeMax})"
               >
             </div>
@@ -649,11 +599,10 @@
     window.togglePick = function(itemId, maxAvail) {
       const cb = document.getElementById(`pick_${itemId}`);
       const qty = document.getElementById(`qty_${itemId}`);
-      if(!cb || !qty) return;
-
+      if(!cb ||!qty) return;
       if(cb.checked) {
         const current = parseInt(qty.value) || 0;
-        qty.value = current > 0 ? Math.min(current, maxAvail) : (maxAvail >= 1 ? 1 : 0);
+        qty.value = current > 0? Math.min(current, maxAvail) : (maxAvail >= 1? 1 : 0);
       } else {
         qty.value = 0;
       }
@@ -662,12 +611,10 @@
     window.ensureQtyWithin = function(itemId, maxAvail) {
       const qty = document.getElementById(`qty_${itemId}`);
       const cb = document.getElementById(`pick_${itemId}`);
-      if(!qty || !cb) return;
-
+      if(!qty ||!cb) return;
       let v = parseInt(qty.value) || 0;
       v = Math.max(0, Math.min(v, maxAvail));
       qty.value = v;
-
       cb.checked = v > 0;
     };
   }
@@ -677,14 +624,12 @@
     const phone = document.getElementById('clientPhone').value.trim();
     const event = document.getElementById('eventName').value.trim();
     const date = document.getElementById('eventDate').value;
-
     const preparedBy = (document.getElementById('preparedBy')?.value || '').trim();
     const preparedPhone = (document.getElementById('phoneNo')?.value || '').trim();
-
     const msgDiv = document.getElementById('bookingMessage');
     msgDiv.innerHTML = '';
 
-    if(!client || !phone || !event || !date) {
+    if(!client ||!phone ||!event ||!date) {
       msgDiv.innerHTML = '<div class="alert alert-error">Please fill all event details</div>';
       return;
     }
@@ -692,7 +637,7 @@
       msgDiv.innerHTML = '<div class="alert alert-error">Enter valid WhatsApp number: 0712345678</div>';
       return;
     }
-    if(!preparedBy || !preparedPhone) {
+    if(!preparedBy ||!preparedPhone) {
       msgDiv.innerHTML = '<div class="alert alert-error">Please fill PDF Prepared By and Phone</div>';
       return;
     }
@@ -720,15 +665,8 @@
 
     if(!hasError) {
       push(ref(db, 'bookings'), {
-        client,
-        phone,
-        eventName: event,
-        date,
-        items: bookedItems,
-        status: 'pending',
-        id: Date.now(),
-        preparedBy,
-        preparedPhone
+        client, phone, eventName: event, date, items: bookedItems,
+        status: 'pending', id: Date.now(), preparedBy, preparedPhone
       });
 
       msgDiv.innerHTML = `<div class="alert alert-success">✅ Booking Submitted! Awaiting Approval</div>`;
@@ -749,8 +687,7 @@
     const name = document.getElementById('itemName').value;
     const category = document.getElementById('addCatName').value;
     const qty = parseInt(document.getElementById('itemQty').value) || 0;
-    if(!category || !name || qty < 1) { alert('Fill all fields'); return; }
-
+    if(!category ||!name || qty < 1) { alert('Fill all fields'); return; }
     const newId = Date.now();
     equipment[newId] = {name, category, total: qty, out: 0};
     set(ref(db, 'equipment'), equipment);
