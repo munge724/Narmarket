@@ -21,90 +21,104 @@
   header { background:var(--red); color:var(--white); padding:20px; text-align:center; box-shadow:0 4px 10px rgba(255,0,0,0.3); }
   header img { height:55px; background:var(--white); padding:6px; border-radius:10px; margin-bottom:8px; }
   header h1 { color:var(--white); font-size:20px; font-weight:700; letter-spacing:1px; }
- .container { padding:20px; max-width:1000px; margin:auto; }
- .top-bar { display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:25px; }
- .tabs { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px; margin-bottom:20px; }
- .tab-btn { background:#ddd; color:#333; padding:14px; border:none; border-radius:12px; cursor:pointer; font-weight:700; font-size:14px; transition:0.2s; }
- .tab-btn.active { background:var(--red); color:var(--white); }
- .btn { background:var(--red); color:var(--white); padding:16px; border:none; border-radius:15px; cursor:pointer; font-weight:700; font-size:16px; box-shadow:0 4px 10px rgba(255,0,0,0.3); transition:0.2s; width:100%; }
- .btn:hover { background:#CC0000; transform:scale(1.02); }
- .btn-approve { background:var(--green); }
- .btn-approve:hover { background:#1E7E1E; }
- .btn-cancel { background:#888; }
- .btn-cancel:hover { background:#666; }
- .btn-return { background:var(--blue); }
- .btn-return:hover { background:#0055aa; }
- .btn-whatsapp { background:var(--whatsapp); }
- .btn-whatsapp:hover { background:#1EBE57; }
- .category { background:var(--white); margin:20px 0; border-radius:15px; box-shadow:0 3px 12px rgba(0,0,0,0.1); overflow:hidden; }
- .cat-header { color:var(--white); padding:16px; font-size:18px; font-weight:700; display:flex; justify-content:space-between; align-items:center; }
- .cat-header.green { background:var(--green); }
- .cat-header.blue { background:var(--blue); }
- .cat-header.gold { background:var(--gold); color:#333; }
+.container { padding:20px; max-width:1000px; margin:auto; }
+.top-bar { display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:25px; }
+.tabs { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px; margin-bottom:20px; }
+.tab-btn { background:#ddd; color:#333; padding:14px; border:none; border-radius:12px; cursor:pointer; font-weight:700; font-size:14px; transition:0.2s; }
+.tab-btn.active { background:var(--red); color:var(--white); }
+.btn { background:var(--red); color:var(--white); padding:16px; border:none; border-radius:15px; cursor:pointer; font-weight:700; font-size:16px; box-shadow:0 4px 10px rgba(255,0,0,0.3); transition:0.2s; width:100%; }
+.btn:hover { background:#CC0000; transform:scale(1.02); }
+.btn-approve { background:var(--green); }
+.btn-approve:hover { background:#1E7E1E; }
+.btn-cancel { background:#888; }
+.btn-cancel:hover { background:#666; }
+.btn-return { background:var(--blue); }
+.btn-return:hover { background:#0055aa; }
+.btn-whatsapp { background:var(--whatsapp); }
+.btn-whatsapp:hover { background:#1EBE57; }
+.category { background:var(--white); margin:20px 0; border-radius:15px; box-shadow:0 3px 12px rgba(0,0,0,0.1); overflow:hidden; }
+.cat-header { color:var(--white); padding:16px; font-size:18px; font-weight:700; display:flex; justify-content:space-between; align-items:center; }
+.cat-header.green { background:var(--green); }
+.cat-header.blue { background:var(--blue); }
+.cat-header.gold { background:var(--gold); color:#333; }
   table { width:100%; border-collapse:collapse; table-layout:fixed; }
   th { background:#f8f8f8; padding:14px; text-align:left; font-size:14px; color:#333; font-weight:600; }
   td { padding:14px; border-bottom:1px solid #eee; font-size:15px; }
- .available { color:var(--green); font-weight:600; }.out { color:var(--red); font-weight:600; }
+.available { color:var(--green); font-weight:600; }.out { color:var(--red); font-weight:600; }
   input, select { width:100%; padding:14px; border:2px solid #ddd; border-radius:12px; font-size:15px; margin:8px 0 15px 0; }
   input:focus, select:focus { border-color:var(--red); outline:none; }
   label { font-weight:600; font-size:14px; color:#333; }
- .booking-card { background:var(--white); border:3px solid #ddd; padding:18px; margin:15px 0; border-radius:15px; box-shadow:0 3px 10px rgba(0,0,0,0.1); }
- .booking-card.pending { border-color:var(--gold); }
- .booking-card.approved { border-color:var(--green); }
- .booking-card.cancelled { border-color:#888; opacity:0.6; }
- .booking-card.returned { border-color:var(--blue); opacity:0.7; }
- .countdown { font-size:16px; font-weight:700; color:var(--red); margin-top:6px; }
- .booking-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:15px; }
- .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:1000; padding:20px; }
- .modal-content { background:var(--white); padding:25px; border-radius:18px; width:95%; max-width:600px; max-height:90vh; overflow-y:auto; margin:10px auto; border:3px solid var(--red); }
- .doc-modal { background:var(--white); padding:35px; width:95%; max-width:800px; border:4px solid var(--red); }
- .doc-header { text-align:center; border-bottom:3px solid var(--red); padding-bottom:18px; margin-bottom:20px; }
- .doc-logo-img { max-width:200px; margin-bottom:10px; }
- .doc-title { font-size:22px; margin-top:10px; font-weight:700; color:var(--red); }
- .doc-info { display:grid; grid-template-columns:1fr 1fr; gap:15px; padding:18px; background:#f8f8f8; border-radius:12px; border:2px solid #ddd; }
- .close { float:right; font-size:30px; cursor:pointer; color:var(--red); font-weight:700; }
- .alert { padding:14px; margin:14px 0; border-radius:12px; text-align:center; font-weight:600; }
- .alert-error { background:#ffe0e0; color:var(--red); }
- .alert-success { background:#e8ffe8; color:var(--green); font-size:16px; }
+.booking-card { background:var(--white); border:3px solid #ddd; padding:18px; margin:15px 0; border-radius:15px; box-shadow:0 3px 10px rgba(0,0,0,0.1); }
+.booking-card.pending { border-color:var(--gold); }
+.booking-card.approved { border-color:var(--green); }
+.booking-card.cancelled { border-color:#888; opacity:0.6; }
+.booking-card.returned { border-color:var(--blue); opacity:0.7; }
+.countdown { font-size:16px; font-weight:700; color:var(--red); margin-top:6px; }
+.booking-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:15px; }
+.modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:1000; padding:20px; }
+.modal-content { background:var(--white); padding:25px; border-radius:18px; width:95%; max-width:600px; max-height:90vh; overflow-y:auto; margin:10px auto; border:3px solid var(--red); }
+.doc-modal { background:var(--white); padding:0; width:95%; max-width:800px; border:4px solid var(--red); border-radius:18px; display:flex; flex-direction:column; max-height:90vh; }
+.doc-header { text-align:center; border-bottom:3px solid var(--red); padding:25px 35px 18px 35px; }
+.doc-logo-img { max-width:200px; margin-bottom:10px; }
+.doc-title { font-size:22px; margin-top:10px; font-weight:700; color:var(--red); }
+.doc-info { display:grid; grid-template-columns:1fr 1fr; gap:15px; padding:18px 35px; background:#f8f8f8; border:2px solid #ddd; margin:0 35px; border-radius:12px; }
+.close { float:right; font-size:30px; cursor:pointer; color:var(--red); font-weight:700; padding:10px 20px 0 0; }
+.alert { padding:14px; margin:14px 0; border-radius:12px; text-align:center; font-weight:600; }
+.alert-error { background:#ffe0e0; color:var(--red); }
+.alert-success { background:#e8ffe8; color:var(--green); font-size:16px; }
   #loading { text-align:center; padding:60px; font-size:18px; color:var(--red); font-weight:700; }
- .doc-table { width:100%; border-collapse:collapse; margin:20px 0; table-layout:fixed; }
- .doc-table th { background:var(--red); color:var(--white); padding:12px; font-weight:700; }
- .doc-table td { border:2px solid #eee; padding:12px; }
- .page { display:none; }.page.active { display:block; }
- .back-btn { background:#888; }
- .edit-btn { background:var(--white); color:#333; border:none; padding:10px 16px; font-size:13px; border-radius:10px; cursor:pointer; font-weight:700; }
- .add-item-btn { background:var(--white); color:#333; border:none; padding:8px 14px; font-size:13px; border-radius:10px; cursor:pointer; font-weight:700; margin-right:8px; }
+.doc-table { width:100%; border-collapse:collapse; margin:20px 35px; width:calc(100% - 70px); table-layout:fixed; }
+.doc-table th { background:var(--red); color:var(--white); padding:12px; font-weight:700; }
+.doc-table td { border:2px solid #eee; padding:12px; }
+.page { display:none; }.page.active { display:block; }
+.back-btn { background:#888; }
+.edit-btn { background:var(--white); color:#333; border:none; padding:10px 16px; font-size:13px; border-radius:10px; cursor:pointer; font-weight:700; }
+.add-item-btn { background:var(--white); color:#333; border:none; padding:8px 14px; font-size:13px; border-radius:10px; cursor:pointer; font-weight:700; margin-right:8px; }
 
   @media print {.no-print { display:none; } }
   @media print {
-   .doc-table { page-break-inside: auto; }
-   .doc-table tr { page-break-inside: avoid; }
-   .doc-header,.doc-info { page-break-after: avoid; }
+ .doc-table { page-break-inside: auto; }
+ .doc-table tr { page-break-inside: avoid; }
+ .doc-header,.doc-info { page-break-after: avoid; }
     thead { display: table-header-group; }
   }
- .pdf-footer { text-align:center; font-size:14px; font-weight:700; color:#444; margin-top:30px; padding-top:10px; border-top:2px solid #ddd; }
- .qty-edit { width:90px; display:inline-block; margin-right:10px; }
- .name-edit { width:200px; display:inline-block; margin-right:10px; }
- .pin-box { background:#f8f8f8; padding:18px; border-radius:12px; margin-bottom:18px; border:2px solid #ddd; }
- .status-badge { padding:6px 12px; border-radius:20px; font-size:12px; font-weight:700; color:white; }
- .status-pending { background:var(--gold); color:#333; }
- .status-approved { background:var(--green); }
- .status-cancelled { background:#888; }
- .status-returned { background:var(--blue); }
+.pdf-footer { text-align:center; font-size:14px; font-weight:700; color:#444; margin:30px 35px 20px 35px; padding-top:10px; border-top:2px solid #ddd; }
+.qty-edit { width:90px; display:inline-block; margin-right:10px; }
+.name-edit { width:200px; display:inline-block; margin-right:10px; }
+.pin-box { background:#f8f8f8; padding:18px; border-radius:12px; margin-bottom:18px; border:2px solid #ddd; }
+.status-badge { padding:6px 12px; border-radius:20px; font-size:12px; font-weight:700; color:white; }
+.status-pending { background:var(--gold); color:#333; }
+.status-approved { background:var(--green); }
+.status-cancelled { background:#888; }
+.status-returned { background:var(--blue); }
 
-  /* FIX: Remove scroll for PDF */
+  /* FIX: Scrollable PDF + Sticky Button */
   #docContent{
-    max-height: none;
-    overflow-y: visible;
+    max-height: calc(90vh - 160px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 0 20px 0;
+  }
+.doc-download-wrap{
+    position: sticky;
+    bottom: 0;
+    background: var(--white);
+    padding: 15px 35px 25px 35px;
+    border-top: 2px solid #eee;
+    z-index: 10;
   }
 
   @media (max-width: 600px) {
-   .modal { padding: 10px; align-items: flex-start; }
-   .doc-modal { padding: 14px; max-width: 100%; width: 100%; }
-   .doc-header { padding-bottom: 12px; margin-bottom: 12px; }
-   .doc-title { font-size: 18px; }
-   .doc-info { grid-template-columns: 1fr; padding: 12px; }
-   .doc-table th,.doc-table td { padding: 10px; font-size: 13px; }
+ .modal { padding: 10px; align-items: flex-start; }
+ .doc-modal { padding: 0; max-width: 100%; width: 100%; }
+ .doc-header { padding: 15px 15px 12px 15px; }
+ .doc-title { font-size: 18px; }
+ .doc-info { grid-template-columns: 1fr; padding: 12px; margin: 0 15px; }
+ .doc-table { margin: 20px 15px; width: calc(100% - 30px); }
+ .doc-table th,.doc-table td { padding: 10px; font-size: 13px; }
+   #docContent { max-height: 70vh; }
+ .doc-download-wrap{ padding: 15px; }
+ .pdf-footer{ margin: 30px 15px 20px 15px; }
   }
 </style>
 </head>
@@ -185,7 +199,9 @@
   <div class="doc-modal">
     <span class="close no-print" onclick="window.closeModal('docModal')">&times;</span>
     <div id="docContent"></div>
-    <button class="btn no-print" onclick="window.downloadPDF()">💾 Download PDF</button>
+    <div class="doc-download-wrap no-print">
+      <button class="btn" onclick="window.downloadPDF()">💾 Download PDF</button>
+    </div>
   </div>
 </div>
 
@@ -438,7 +454,6 @@
     window.viewBookingDoc(currentDocId);
   }
 
-  // FIXED PDF DOWNLOAD - CLONES CONTENT SO IT CANT BE BLANK
   window.downloadPDF = function() {
     if(!currentDocId) { alert('Open View PDF first'); return; }
     const b = bookings[currentDocId];
@@ -447,12 +462,15 @@
     const element = document.getElementById('docContent');
     if(!element) { alert('PDF content not ready'); return; }
 
-    // Clone to avoid modal/overflow issues
-    const clonedElement = element.cloneNode(true);
+    const cloned = element.cloneNode(true);
+    cloned.style.maxHeight = 'none';
+    cloned.style.overflow = 'visible';
+
     const wrapper = document.createElement('div');
     wrapper.style.padding = '20px';
     wrapper.style.background = '#fff';
-    wrapper.appendChild(clonedElement);
+    wrapper.appendChild(cloned);
+    document.body.appendChild(wrapper);
 
     const opt = {
       margin: 0.25,
@@ -463,7 +481,6 @@
       pagebreak: { mode: ['css', 'legacy'] }
     };
 
-    document.body.appendChild(wrapper);
     html2pdf().set(opt).from(wrapper).save().then(() => {
       document.body.removeChild(wrapper);
     }).catch(err => {
@@ -509,11 +526,11 @@
           <thead><tr><th>#</th><th>Item</th><th>Qty</th></tr></thead>
           <tbody>${itemsRows}</tbody>
         </table>
-        <div style="margin-top:40px; font-size:16px;">
+        <div style="margin:40px 35px 0 35px; font-size:16px;">
           <p><b>Prepared By:</b> ${prepared}</p>
           <p><b>Phone:</b> ${phone}</p>
         </div>
-        <p style="margin-top:20px; font-style:italic; color:#555;"><b>Notes:</b> All items must be returned in good condition after event.</p>
+        <p style="margin:20px 35px; font-style:italic; color:#555;"><b>Notes:</b> All items must be returned in good condition after event.</p>
         <div class="pdf-footer">FLAVA NAROK</div>
       `;
     }
@@ -523,19 +540,18 @@
   function renderBookingForm() {
     const wrap = document.getElementById('bookingForm');
     if(!wrap) return;
-    const cats = [{ name: 'Catering' }, { name: 'Event' }, { name: 'Deco' }];
+const cats = [{ name: 'Catering' }, { name: 'Event' }, { name: 'Deco' }];
     const itemsByCat = {};
     cats.forEach(c => itemsByCat[c.name] = []);
     for (let id in equipment) {
       const item = equipment[id];
       if (!item) continue;
       if (!itemsByCat[item.category]) continue;
-          const available = Math.max(0, (item.total || 0) - (item.out || 0));
+      const available = Math.max(0, (item.total || 0) - (item.out || 0));
       itemsByCat[item.category].push({ id, name: item.name, available, total: item.total || 0 });
     }
 
     let html = '';
-
     cats.forEach(cat => {
       const list = itemsByCat[cat.name] || [];
       if (!list.length) return;
