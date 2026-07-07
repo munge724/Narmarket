@@ -3,8 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FLAVA CATERING | Dashboard</title>
+<title>Flava Catering | Tent, Chairs & Catering Equipment Hire in Narok</title>
+<meta name="description" content="Flava Catering Narok - Tent, Chairs, Catering Equipment Hire. Call 0705 280365">
+<meta name="keywords" content="flava catering narok, tent hire narok, chairs for hire, catering equipment kenya">
+<meta name="author" content="Flava Catering">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   :root {
     --red: #FF0000;
@@ -161,6 +165,7 @@
 .status-approved { background:var(--green); }
 .status-cancelled { background:#888; }
 .status-returned { background:var(--blue); }
+@media print {.no-print { display:none; } }
 </style>
 </head>
 <body>
@@ -185,7 +190,7 @@
         <button class="btn" onclick="window.openModal('bookingModal')">New Event</button>
         <button class="btn" onclick="window.showPage('eventsPage')">View Events</button>
       </div>
-      <h2 style="color:var(--red); margin-bottom:15px; font-size:22px; font-weight:700;">Current Stock</h2><div id="inventory"></div>
+      <h2 style="color:var(--red); margin-bottom:15px; font-size:22px; font-weight:700;">Current Stock - 200 Each</h2><div id="inventory"></div>
     </div>
   </div>
 
@@ -218,7 +223,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase, ref, set, onValue, push, update, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  import { getDatabase, ref, set, onValue, push, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
   const firebaseConfig = {
     databaseURL: "https://simes1-abedd-default-rtdb.firebaseio.com"
@@ -270,7 +275,7 @@
     let temp = {};
     [...cateringItems,...eventItems,...decoItems].forEach((name, i) => {
       let category = cateringItems.includes(name)? "Catering" : eventItems.includes(name)? "Event" : "Deco";
-      temp[i] = {name, category, total: 200, out: 0}; // CHANGED: 200 stock, 0 out
+      temp[i] = {name, category, total: 200, out: 0};
     });
     set(ref(db, 'equipment'), temp);
   }
@@ -362,262 +367,292 @@
   }
 
   window.filterEvents = function(filter, btn) {
-    currentFilter = filter;
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderBookings();
-  }
+  currentFilter = filter;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderBookings();
+}
 
-  function formatPhone(phone) {
-    phone = phone.replace(/\D/g, '');
-    if(phone.startsWith('0')) phone = '254' + phone.substring(1);
-    if(!phone.startsWith('254')) phone = '254' + phone;
-    return phone;
-  }
+function formatPhone(phone) {
+  phone = phone.replace(/\D/g, '');
+  if(phone.startsWith('0')) phone = '254' + phone.substring(1);
+  if(!phone.startsWith('254')) phone = '254' + phone;
+  return phone;
+}
 
-  function sendWhatsApp(phone, message) {
-    const formattedPhone = formatPhone(phone);
-    const url = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
-    window.open(url, '_blank');
-  }
+function sendWhatsApp(phone, message) {
+  const formattedPhone = formatPhone(phone);
+  const url = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
+  window.open(url, '_blank');
+}
 
-  function renderBookings() {
-    const container = document.getElementById('activeBookings');
-    container.innerHTML = '';
-    if(Object.keys(bookings).length === 0) { container.innerHTML = '<p style="text-align:center; color:#888;">No events yet</p>'; return; }
+function renderBookings() {
+  const container = document.getElementById('activeBookings');
+  container.innerHTML = '';
+  if(Object.keys(bookings).length === 0) { container.innerHTML = '<p style="text-align:center; color:#888;">No events yet</p>'; return; }
 
-    const today = new Date();
-    const sortedBookings = Object.entries(bookings).sort((a,b) => new Date(b[1].date) - new Date(a[1].date));
+  const today = new Date();
+  const sortedBookings = Object.entries(bookings).sort((a,b) => new Date(b[1].date) - new Date(a[1].date));
 
-    let count = 0;
-    sortedBookings.forEach(([id, b]) => {
-      const eventDate = new Date(b.date);
-      const diffDays = Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24));
-      const isOngoing = b.status === 'approved';
-      const isDone = b.status === 'returned' || b.status === 'cancelled';
+  let count = 0;
+  sortedBookings.forEach(([id, b]) => {
+    const eventDate = new Date(b.date);
+    const diffDays = Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24));
+    const isOngoing = b.status === 'approved';
+    const isDone = b.status === 'returned' || b.status === 'cancelled';
 
-      if(currentFilter === 'pending' && b.status!== 'pending') return;
-      if(currentFilter === 'ongoing' &&!isOngoing) return;
-      if(currentFilter === 'done' &&!isDone) return;
+    if(currentFilter === 'pending' && b.status!== 'pending') return;
+    if(currentFilter === 'ongoing' &&!isOngoing) return;
+    if(currentFilter === 'done' &&!isDone) return;
 
-      count++;
+    count++;
 
-      let status = '';
-      let statusClass = '';
-      if(b.status === 'cancelled') {
-        status = 'CANCELLED'; statusClass = 'status-cancelled';
-      } else if(b.status === 'returned') {
-        status = 'RETURNED - DONE'; statusClass = 'status-returned';
-      } else if(b.status === 'approved') {
-        status = diffDays < 0? 'ONGOING' : diffDays === 0? 'ONGOING TODAY' : `${diffDays} days to go`;
-        statusClass = 'status-approved';
-      } else {
-        status = diffDays < 0? 'PENDING - DATE PASSED' : diffDays === 0? 'PENDING - TODAY' : `PENDING - ${diffDays} days to go`;
-        statusClass = 'status-pending';
-      }
+    let status = '';
+    let statusClass = '';
+    if(b.status === 'cancelled') {
+      status = 'CANCELLED'; statusClass = 'status-cancelled';
+    } else if(b.status === 'returned') {
+      status = 'RETURNED - DONE'; statusClass = 'status-returned';
+    } else if(b.status === 'approved') {
+      status = diffDays < 0? 'ONGOING' : diffDays === 0? 'ONGOING TODAY' : `${diffDays} days to go`;
+      statusClass = 'status-approved';
+    } else {
+      status = diffDays < 0? 'PENDING - DATE PASSED' : diffDays === 0? 'PENDING - TODAY' : `PENDING - ${diffDays} days to go`;
+      statusClass = 'status-pending';
+    }
 
-      let actionButtons = '';
-      if(b.status === 'pending') {
-        actionButtons = `
-          <div class="booking-actions">
-            <button class="btn btn-approve" onclick="window.approveBooking('${id}')">✓ Approve</button>
-            <button class="btn btn-cancel" onclick="window.cancelBooking('${id}')">✕ Cancel</button>
-          </div>`;
-      } else if(b.status === 'approved') {
-        actionButtons = `<button class="btn btn-return" onclick="window.returnBooking('${id}')">↩ Return Items</button>`;
-      }
-
-      container.innerHTML += `
-        <div class="booking-card ${b.status}">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <h3 style="color:var(--red); font-size:18px;">${b.eventName}</h3>
-            <span class="status-badge ${statusClass}">${b.status.toUpperCase()}</span>
-          </div>
-          <p><b>Client:</b> ${b.client}</p>
-          <p><b>WhatsApp:</b> ${b.phone || 'N/A'}</p>
-          <p><b>Date:</b> ${b.date}</p>
-          <p class="countdown">${status}</p>
-          <button class="btn btn-whatsapp" style="margin-top:10px;" onclick="window.sendManualWhatsApp('${id}')">💬 WhatsApp Client</button>
-          <button class="btn" style="margin-top:10px;" onclick="window.preparePDF('${id}')">📄 View PDF</button>
-          ${actionButtons}
+    let actionButtons = '';
+    if(b.status === 'pending') {
+      actionButtons = `
+        <div class="booking-actions">
+          <button class="btn btn-approve" onclick="window.approveBooking('${id}')">✓ Approve</button>
+          <button class="btn btn-cancel" onclick="window.cancelBooking('${id}')">✕ Cancel</button>
         </div>`;
-    });
-
-    if(count === 0) container.innerHTML = '<p style="text-align:center; color:#888;">No events in this category</p>';
-  }
-
-  window.sendManualWhatsApp = function(id) {
-    const b = bookings[id];
-    const message = `Hi ${b.client}, \n\nThis is Flava Catering regarding your event: "${b.eventName}" on ${b.date}.\n\nThank you!`;
-    sendWhatsApp(b.phone, message);
-  }
-
-  window.approveBooking = function(id) {
-    if(!confirm('Approve this booking? Stock will be marked as OUT and WhatsApp will open.')) return;
-
-    const b = bookings[id];
-    for(let itemId in b.items) {
-      equipment[itemId].out += b.items[itemId].qty;
-    }
-    update(ref(db, 'bookings/' + id), {status: 'approved'});
-    set(ref(db, 'equipment'), equipment);
-
-    const message = `Hi ${b.client}! \n\nYour booking for "${b.eventName}" on ${b.date} has been *APPROVED* ✅\n\nFlava Catering will contact you soon.\nThank you for choosing us!`;
-    sendWhatsApp(b.phone, message);
-  }
-
-  window.cancelBooking = function(id) {
-    if(!confirm('Cancel this booking? WhatsApp will open to notify client.')) return;
-    const b = bookings[id];
-    update(ref(db, 'bookings/' + id), {status: 'cancelled'});
-
-    const message = `Hi ${b.client}, \n\nWe regret to inform you that your booking for "${b.eventName}" on ${b.date} has been *CANCELLED*.\n\nPlease contact us for more details.\nFlava Catering`;
-    sendWhatsApp(b.phone, message);
-  }
-
-  window.returnBooking = function(id) {
-    if(!confirm('Return all items from this event? Stock will be marked as IN and event will move to Done.')) return;
-
-    const b = bookings[id];
-    for(let itemId in b.items) {
-      equipment[itemId].out -= b.items[itemId].qty;
-      if(equipment[itemId].out < 0) equipment[itemId].out = 0;
-    }
-    update(ref(db, 'bookings/' + id), {status: 'returned'});
-    set(ref(db, 'equipment'), equipment);
-
-    const message = `Hi ${b.client}, \n\nAll equipment for "${b.eventName}" has been *RETURNED*. Thank you for using Flava Catering!`;
-    sendWhatsApp(b.phone, message);
-
-    alert('Items Returned! Stock updated and event moved to Done.');
-  }
-
-  window.preparePDF = function(id) {
-    currentDocId = id;
-    document.getElementById('preparedBy').value = '';
-    document.getElementById('phoneNo').value = '';
-    window.openModal('pdfSignModal');
-  }
-
-  window.downloadPDF = function() {
-    const prepared = document.getElementById('preparedBy').value;
-    const phone = document.getElementById('phoneNo').value;
-    if(!prepared ||!phone) { alert('Please fill both fields'); return; }
-    window.closeModal('pdfSignModal');
-    window.viewBookingDoc(currentDocId, prepared, phone);
-  }
-
-  window.viewBookingDoc = function(id, prepared='', phone='') {
-    const b = bookings[id];
-    let itemsRows = ''; let count = 1;
-    for(let itemId in b.items){
-      itemsRows += `<tr><td>${count++}</td><td>${b.items[itemId].name}</td><td>${b.items[itemId].qty}</td></tr>`;
+    } else if(b.status === 'approved') {
+      actionButtons = `<button class="btn btn-return" onclick="window.returnBooking('${id}')">↩ Return Items</button>`;
     }
 
-    document.getElementById('docContent').innerHTML = `
-      <div class="doc-header">
-        <img src="logo.png" class="doc-logo-img" onerror="this.style.display='none'">
-        <p style="font-size:16px; color:#333; font-weight:600;"><b>Narok, Kenya | Tel: 0705 280365</b></p>
-        <div class="doc-title">EQUIPMENT BOOKING SLIP</div>
-        <p style="margin-top:10px; font-weight:600;">Status: ${b.status.toUpperCase()}</p>
-      </div>
-      <div class="doc-info">
+    container.innerHTML += `
+      <div class="booking-card ${b.status}">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <h3 style="color:var(--red); font-size:18px;">${b.eventName}</h3>
+          <span class="status-badge ${statusClass}">${b.status.toUpperCase()}</span>
+        </div>
         <p><b>Client:</b> ${b.client}</p>
         <p><b>WhatsApp:</b> ${b.phone || 'N/A'}</p>
-        <p><b>Event:</b> ${b.eventName}</p>
         <p><b>Date:</b> ${b.date}</p>
-      </div>
-      <table class="doc-table">
-        <thead><tr><th>#</th><th>Item</th><th>Qty</th></tr></thead>
-        <tbody>${itemsRows}</tbody>
-      </table>
-      <div style="margin-top:40px; font-size:16px;">
-        <p><b>Prepared By:</b> ${prepared}</p>
-        <p><b>Phone:</b> ${phone}</p>
-      </div>
-      <p style="margin-top:20px; font-style:italic; color:#555;"><b>Notes:</b> All items must be returned in good condition after event.</p>`;
-    window.openModal('docModal');
+        <p class="countdown">${status}</p>
+        <button class="btn btn-whatsapp" style="margin-top:10px;" onclick="window.sendManualWhatsApp('${id}')">💬 WhatsApp Client</button>
+        <button class="btn" style="margin-top:10px;" onclick="window.preparePDF('${id}')">📄 View PDF</button>
+        ${actionButtons}
+      </div>`;
+  });
+
+  if(count === 0) container.innerHTML = '<p style="text-align:center; color:#888;">No events in this category</p>';
+}
+
+window.sendManualWhatsApp = function(id) {
+  const b = bookings[id];
+  const message = `Hi ${b.client}, \n\nThis is Flava Catering regarding your event: "${b.eventName}" on ${b.date}.\n\nThank you!`;
+  sendWhatsApp(b.phone, message);
+}
+
+window.approveBooking = function(id) {
+  if(!confirm('Approve this booking? Stock will be marked as OUT and WhatsApp will open.')) return;
+
+  const b = bookings[id];
+  for(let itemId in b.items) {
+    equipment[itemId].out += b.items[itemId].qty;
+  }
+  update(ref(db, 'bookings/' + id), {status: 'approved'});
+  set(ref(db, 'equipment'), equipment);
+
+  const message = `Hi ${b.client}! \n\nYour booking for "${b.eventName}" on ${b.date} has been *APPROVED* ✅\n\nFlava Catering will contact you soon.\nThank you for choosing us!`;
+  sendWhatsApp(b.phone, message);
+}
+
+window.cancelBooking = function(id) {
+  if(!confirm('Cancel this booking? WhatsApp will open to notify client.')) return;
+  const b = bookings[id];
+  update(ref(db, 'bookings/' + id), {status: 'cancelled'});
+
+  const message = `Hi ${b.client}, \n\nWe regret to inform you that your booking for "${b.eventName}" on ${b.date} has been *CANCELLED*.\n\nPlease contact us for more details.\nFlava Catering`;
+  sendWhatsApp(b.phone, message);
+}
+
+window.returnBooking = function(id) {
+  if(!confirm('Return all items from this event? Stock will be marked as IN and event will move to Done.')) return;
+
+  const b = bookings[id];
+  for(let itemId in b.items) {
+    equipment[itemId].out -= b.items[itemId].qty;
+    if(equipment[itemId].out < 0) equipment[itemId].out = 0;
+  }
+  update(ref(db, 'bookings/' + id), {status: 'returned'});
+  set(ref(db, 'equipment'), equipment);
+
+  const message = `Hi ${b.client}, \n\nAll equipment for "${b.eventName}" has been *RETURNED*. Thank you for using Flava Catering!`;
+  sendWhatsApp(b.phone, message);
+
+  alert('Items Returned! Stock updated and event moved to Done.');
+}
+
+window.preparePDF = function(id) {
+  currentDocId = id;
+  document.getElementById('preparedBy').value = '';
+  document.getElementById('phoneNo').value = '';
+  window.openModal('pdfSignModal');
+}
+
+window.downloadPDF = function() {
+  const prepared = document.getElementById('preparedBy').value;
+  const phone = document.getElementById('phoneNo').value;
+  if(!prepared ||!phone) { alert('Please fill both fields'); return; }
+  window.closeModal('pdfSignModal');
+
+  const b = bookings[currentDocId];
+  window.viewBookingDoc(currentDocId, prepared, phone);
+
+  setTimeout(() => {
+    const element = document.getElementById('docContent');
+    const opt = {
+      margin: 0.4,
+      filename: `Flava_Booking_${b.client}_${b.date}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
+    window.closeModal('docModal');
+  }, 400);
+}
+
+window.viewBookingDoc = function(id, prepared='', phone='') {
+  const b = bookings[id];
+  let itemsRows = ''; let count = 1;
+  for(let itemId in b.items){
+    itemsRows += `<tr><td>${count++}</td><td>${b.items[itemId].name}</td><td>${b.items[itemId].qty}</td></tr>`;
   }
 
-  function renderBookingForm() {
-    const container = document.getElementById('bookingForm'); container.innerHTML = '';
-    const cats = [
-      {name:"Catering", color:"green"},
-      {name:"Event", color:"blue"},
-      {name:"Deco", color:"gold"}
-    ];
-    cats.forEach(cat => {
-      let cards = '';
-      for(let id in equipment){
-        let item = equipment[id];
-        if(item.category!== cat.name) continue;
-        const available = item.total - item.out;
-        if(available > 0) cards += `<div class="booking-item"><div style="display:flex; justify-content:space-between;"><b>${item.name}</b><span>Avail: ${available}</span></div><label>Qty Needed</label><input type="number" id="qty_${id}" min="0" max="${available}"></div>`;
-      }
-      if(cards) container.innerHTML += `<div class="category"><div class="cat-header ${cat.color}">${cat.name}</div>${cards}</div>`;
-    });
-  }
+  document.getElementById('docContent').innerHTML = `
+    <div class="doc-header">
+      <img src="logo.png" class="doc-logo-img" onerror="this.style.display='none'">
+      <p style="font-size:16px; color:#333; font-weight:600;"><b>Narok, Kenya | Tel: 0705 280365</b></p>
+      <div class="doc-title">EQUIPMENT BOOKING SLIP</div>
+      <p style="margin-top:10px; font-weight:600;">Status: ${b.status.toUpperCase()}</p>
+    </div>
+    <div class="doc-info">
+      <p><b>Client:</b> ${b.client}</p>
+      <p><b>WhatsApp:</b> ${b.phone || 'N/A'}</p>
+      <p><b>Event:</b> ${b.eventName}</p>
+      <p><b>Date:</b> ${b.date}</p>
+    </div>
+    <table class="doc-table">
+      <thead><tr><th>#</th><th>Item</th><th>Qty</th></tr></thead>
+      <tbody>${itemsRows}</tbody>
+    </table>
+    <div style="margin-top:40px; font-size:16px;">
+      <p><b>Prepared By:</b> ${prepared}</p>
+      <p><b>Phone:</b> ${phone}</p>
+    </div>
+    <p style="margin-top:20px; font-style:italic; color:#555;"><b>Notes:</b> All items must be returned in good condition after event.</p>`;
+  window.openModal('docModal');
+}
 
-  window.submitBooking = function() {
-    const client = document.getElementById('clientName').value;
-    const phone = document.getElementById('clientPhone').value;
-    const event = document.getElementById('eventName').value;
-    const date = document.getElementById('eventDate').value;
-    const msgDiv = document.getElementById('bookingMessage');
-    msgDiv.innerHTML = '';
-    if(!client ||!phone ||!event ||!date) { msgDiv.innerHTML = '<div class="alert alert-error">Please fill all details</div>'; return; }
-    if(phone.length < 10) { msgDiv.innerHTML = '<div class="alert alert-error">Enter valid WhatsApp number: 0712345678</div>'; return; }
-
-    let bookedItems = {};
-    let hasError = false;
+function renderBookingForm() {
+  const container = document.getElementById('bookingForm'); container.innerHTML = '';
+  const cats = [
+    {name:"Catering", color:"green"},
+    {name:"Event", color:"blue"},
+    {name:"Deco", color:"gold"}
+  ];
+  cats.forEach(cat => {
+    let cards = '';
     for(let id in equipment){
-      const input = document.getElementById(`qty_${id}`);
-      if(input) {
-        const requested = parseInt(input.value) || 0;
-        const available = equipment[id].total - equipment[id].out;
-        if(requested > available) { hasError = true; msgDiv.innerHTML += `<div class="alert alert-error">Not enough ${equipment[id].name}</div>`; }
-        if(requested > 0) {
-          bookedItems[id] = {name:equipment[id].name, qty:requested};
-        }
+      let item = equipment[id];
+      if(item.category!== cat.name) continue;
+      const available = item.total - item.out;
+      if(available > 0) cards += `<div class="booking-item"><div style="display:flex; justify-content:space-between;"><b>${item.name}</b><span>Avail: ${available}</span></div><label>Qty Needed</label><input type="number" id="qty_${id}" min="0" max="${available}"></div>`;
+    }
+    if(cards) container.innerHTML += `<div class="category"><div class="cat-header ${cat.color}">${cat.name}</div>${cards}</div>`;
+  });
+}
+
+window.submitBooking = function() {
+  const client = document.getElementById('clientName').value;
+  const phone = document.getElementById('clientPhone').value;
+  const event = document.getElementById('eventName').value;
+  const date = document.getElementById('eventDate').value;
+  const msgDiv = document.getElementById('bookingMessage');
+  msgDiv.innerHTML = '';
+  if(!client ||!phone ||!event ||!date) { msgDiv.innerHTML = '<div class="alert alert-error">Please fill all details</div>'; return; }
+  if(phone.length < 10) { msgDiv.innerHTML = '<div class="alert alert-error">Enter valid WhatsApp number: 0712345678</div>'; return; }
+
+  let bookedItems = {};
+  let hasError = false;
+  for(let id in equipment){
+    const input = document.getElementById(`qty_${id}`);
+    if(input) {
+      const requested = parseInt(input.value) || 0;
+      const available = equipment[id].total - equipment[id].out;
+      if(requested > available) { hasError = true; msgDiv.innerHTML += `<div class="alert alert-error">Not enough ${equipment[id].name}</div>`; }
+      if(requested > 0) {
+        bookedItems[id] = {name:equipment[id].name, qty:requested};
       }
     }
-    if(Object.keys(bookedItems).length === 0) { msgDiv.innerHTML = '<div class="alert alert-error">Select at least 1 item</div>'; return; }
-
-    if(!hasError) {
-      push(ref(db, 'bookings'), {
-        client,
-        phone,
-        eventName:event,
-        date,
-        items:bookedItems,
-        status: 'pending',
-        id: Date.now()
-      });
-      msgDiv.innerHTML = `<div class="alert alert-success">✅ Booking Submitted! Awaiting Approval</div>`;
-      setTimeout(() => {
-        document.getElementById('clientName').value = '';
-        document.getElementById('clientPhone').value = '';
-        document.getElementById('eventName').value = '';
-        document.getElementById('eventDate').value = '';
-        window.closeModal('bookingModal');
-      }, 1500);
-    }
   }
+  if(Object.keys(bookedItems).length === 0) { msgDiv.innerHTML = '<div class="alert alert-error">Select at least 1 item</div>'; return; }
 
-  window.addEquipment = function() {
-    const name = document.getElementById('itemName').value;
-    const category = document.getElementById('addCatName').value;
-    const qty = parseInt(document.getElementById('itemQty').value) || 0;
-    if(!category ||!name || qty < 1) { alert('Fill all fields'); return; }
-
-    const newId = Date.now();
-    equipment[newId] = {name, category, total: qty, out: 0};
-    set(ref(db, 'equipment'), equipment);
-    window.closeModal('addStockModal');
+  if(!hasError) {
+    push(ref(db, 'bookings'), {
+      client,
+      phone,
+      eventName:event,
+      date,
+      items:bookedItems,
+      status: 'pending',
+      id: Date.now()
+    });
+    msgDiv.innerHTML = `<div class="alert alert-success">✅ Booking Submitted! Awaiting Approval</div>`;
+    setTimeout(() => {
+      document.getElementById('clientName').value = '';
+      document.getElementById('clientPhone').value = '';
+      document.getElementById('eventName').value = '';
+      document.getElementById('eventDate').value = '';
+      window.closeModal('bookingModal');
+    }, 1500);
   }
+}
 
-  window.openModal = function(id) { document.getElementById(id).style.display = 'flex'; if(id === 'bookingModal') renderBookingForm(); }
-  window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
+window.addEquipment = function() {
+  const name = document.getElementById('itemName').value;
+  const category = document.getElementById('addCatName').value;
+  const qty = parseInt(document.getElementById('itemQty').value) || 0;
+  if(!category ||!name || qty < 1) { alert('Fill all fields'); return; }
+
+  const newId = Date.now();
+  equipment[newId] = {name, category, total: qty, out: 0};
+  set(ref(db, 'equipment'), equipment);
+  window.closeModal('addStockModal');
+}
+
+window.openModal = function(id) {
+  document.getElementById(id).style.display = 'flex';
+  if(id === 'bookingModal') {
+    renderBookingForm();
+  }
+}
+
+window.closeModal = function(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
+window.onclick = function(event) {
+  if (event.target.classList.contains('modal')) {
+    event.target.style.display = "none";
+  }
+}
+
 </script>
 </body>
 </html>
