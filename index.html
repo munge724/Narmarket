@@ -548,7 +548,7 @@ window.viewBookingDoc = function(id, prepared='', phone='') {
       <p style="font-size:16px; color:#333; font-weight:600;"><b>Narok, Kenya | Tel: 0705 280365</b></p>
       <div class="doc-title">EQUIPMENT BOOKING SLIP</div>
       <p style="margin-top:10px; font-weight:600;">Status: ${b.status.toUpperCase()}</p>
-    </div>
+     </div>
     <div class="doc-info">
       <p><b>Client:</b> ${b.client}</p>
       <p><b>WhatsApp:</b> ${b.phone || 'N/A'}</p>
@@ -591,9 +591,8 @@ window.submitBooking = function() {
   const phone = document.getElementById('clientPhone').value;
   const event = document.getElementById('eventName').value;
   const date = document.getElementById('eventDate').value;
-  const msgDiv = document.getElementById('bookingMessage');
-  msgDiv.innerHTML = '';
-  if(!client ||!phone ||!event ||!date) { msgDiv.innerHTML = '<div class="alert alert-error">Please fill all details</div>'; return; }
+  const msgDiv = document.getElementById('bookingMessage 
+    if(!client ||!phone ||!event ||!date) { msgDiv.innerHTML = '<div class="alert alert-error">Please fill all details</div>'; return; }
   if(phone.length < 10) { msgDiv.innerHTML = '<div class="alert alert-error">Enter valid WhatsApp number: 0712345678</div>'; return; }
 
   let bookedItems = {};
@@ -664,3 +663,7 @@ window.onclick = function(event) {
 </script>
 </body>
 </html>
+
+                                         
+
+  
