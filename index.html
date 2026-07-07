@@ -166,6 +166,13 @@
 .status-cancelled { background:#888; }
 .status-returned { background:var(--blue); }
 @media print {.no-print { display:none; } }
+
+/* PDF PAGE BREAK FIX */
+@media print {
+ .doc-table tr { page-break-inside: avoid; }
+ .doc-table { page-break-inside: auto; }
+ .doc-header,.doc-info { page-break-after: avoid; }
+  }
 </style>
 </head>
 <body>
@@ -519,8 +526,9 @@ window.downloadPDF = function() {
       margin: 0.4,
       filename: `Flava_Booking_${b.client}_${b.date}.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      html2canvas: { scale: 2, useCORS: true },
+jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+pagebreak: { mode: ['css', 'legacy'] }
     };
     html2pdf().set(opt).from(element).save();
     window.closeModal('docModal');
