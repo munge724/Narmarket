@@ -90,14 +90,6 @@
   .status-approved { background:var(--green); }
   .status-cancelled { background:#888; }
   .status-returned { background:var(--blue); }
-
-  .select-grid { display:grid; gap:10px; }
-  .item-pick { border:2px solid #eee; border-radius:12px; padding:12px; background:#fff; }
-  .item-pick-top { display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
-  .small-muted { color:#666; font-weight:600; font-size:13px; }
-  .qty-row { display:flex; gap:10px; align-items:center; margin-top:8px; }
-  .qty-row input[type="number"] { margin:0; width:120px; }
-  .item-pick input[type="checkbox"] { width:18px; height:18px; }
 </style>
 </head>
 <body>
@@ -119,7 +111,9 @@
         <button class="btn" onclick="window.openModal('bookingModal')">New Event</button>
         <button class="btn" onclick="window.showPage('eventsPage')">View Events</button>
       </div>
-      <h2 style="color:var(--red); margin-bottom:15px; font-size:22px; font-weight:700;">Current Stock - 200 Each</h2>
+      <div id="currentStockHeading" style="display:none;">
+        <h2 style="color:var(--red); margin-bottom:15px; font-size:22px; font-weight:700;">Current Stock - 200 Each</h2>
+      </div>
       <div id="inventory"></div>
     </div>
   </div>
@@ -417,11 +411,16 @@
   window.approveBooking = function(id) {
     if(!confirm('Approve this booking? Stock will be marked as OUT and WhatsApp will open.')) return;
     const b = bookings[id];
+
     for(let itemId in (b.items || {})) equipment[itemId].out += b.items[itemId].qty;
     update(ref(db, 'bookings/' + id), {status: 'approved'});
     set(ref(db, 'equipment'), equipment);
 
-    const message = `Hi ${b.client}! \n\nYour booking for "${b.eventName}" on ${b.date} has been *APPROVED* ✅\n\nFlava Catering will contact you soon.\nThank you for choosing us!`;
+    const name = b.client || 'Client';
+    const message =
+      `Dear ${name}, your Event Booking has Being Approved. ` +
+      `You Will Be Contacted Soon. Thank you for Choosing Flava.`;
+
     sendWhatsApp(b.phone, message);
   }
 
@@ -429,13 +428,19 @@
     if(!confirm('Cancel this booking? WhatsApp will open to notify client.')) return;
     const b = bookings[id];
     update(ref(db, 'bookings/' + id), {status: 'cancelled'});
-    const message = `Hi ${b.client}, \n\nWe regret to inform you that your booking for "${b.eventName}" on ${b.date} has been *CANCELLED*.\n\nPlease contact us for more details.\nFlava Catering`;
+
+    const name = b.client || 'Client';
+    const message =
+      `Dear ${name}, your Event Booking has been Cancelled. ` +
+      `Thank you for choosing Flava.`;
+
     sendWhatsApp(b.phone, message);
   }
 
   window.returnBooking = function(id) {
     if(!confirm('Return all items from this event? Stock will be marked as IN and event will move to Done.')) return;
     const b = bookings[id];
+
     for(let itemId in (b.items || {})) {
       equipment[itemId].out -= b.items[itemId].qty;
       if(equipment[itemId].out < 0) equipment[itemId].out = 0;
@@ -443,7 +448,11 @@
     update(ref(db, 'bookings/' + id), {status: 'returned'});
     set(ref(db, 'equipment'), equipment);
 
-    const message = `Hi ${b.client}, \n\nAll equipment for "${b.eventName}" has been *RETURNED*. Thank you for using Flava Catering!`;
+    const name = b.client || 'Client';
+    const message =
+      `Dear ${name}, All Equipment Booked Were Well Received Back in Total and Save. ` +
+      `Thank you for choosing Flava.`;
+
     sendWhatsApp(b.phone, message);
     alert('Items Returned! Stock updated and event moved to Done.');
   }
@@ -574,7 +583,6 @@
         <div class="select-grid">
       `;
 
-      // Optional: stable ordering by name
       list.sort((a,b) => a.name.localeCompare(b.name));
 
       list.forEach(it => {
@@ -591,7 +599,6 @@
                     type="checkbox"
                     id="pick_${it.id}"
                     ${disabled ? 'disabled' : ''}
-                    ${safeMax > 0 ? '' : ''}
                     onchange="window.togglePick('${it.id}', ${safeMax})"
                   >
                   <div>
@@ -627,7 +634,6 @@
 
     wrap.innerHTML = html;
 
-    // helpers needed by onchange
     window.togglePick = function(itemId, maxAvail) {
       const cb = document.getElementById(`pick_${itemId}`);
       const qty = document.getElementById(`qty_${itemId}`);
