@@ -66,22 +66,12 @@
   .alert { padding:14px; margin:14px 0; border-radius:12px; text-align:center; font-weight:600; }
   .alert-error { background:#ffe0e0; color:var(--red); }
   .alert-success { background:#e8ffe8; color:var(--green); font-size:16px; }
-  .edit-btn { background:var(--white); color:#333; border:none; padding:10px 16px; font-size:13px; border-radius:10px; cursor:pointer; font-weight:700; }
-  .add-item-btn { background:var(--white); color:#333; border:none; padding:8px 14px; font-size:13px; border-radius:10px; cursor:pointer; font-weight:700; margin-right:8px; }
   #loading { text-align:center; padding:60px; font-size:18px; color:var(--red); font-weight:700; }
   .doc-table { width:100%; border-collapse:collapse; margin:20px 0; table-layout:fixed; }
   .doc-table th { background:var(--red); color:var(--white); padding:12px; font-weight:700; }
   .doc-table td { border:2px solid #eee; padding:12px; }
   .page { display:none; } .page.active { display:block; }
   .back-btn { background:#888; }
-  .qty-edit { width:90px; display:inline-block; margin-right:10px; }
-  .name-edit { width:200px; display:inline-block; margin-right:10px; }
-  .pin-box { background:#f8f8f8; padding:18px; border-radius:12px; margin-bottom:18px; border:2px solid #ddd; }
-  .status-badge { padding:6px 12px; border-radius:20px; font-size:12px; font-weight:700; color:white; }
-  .status-pending { background:var(--gold); color:#333; }
-  .status-approved { background:var(--green); }
-  .status-cancelled { background:#888; }
-  .status-returned { background:var(--blue); }
   @media print { .no-print { display:none; } }
   @media print {
     .doc-table, .doc-table tr, .doc-table td, .doc-table th { break-inside: avoid !important; }
@@ -92,6 +82,22 @@
     tfoot { display: table-footer-group; }
   }
   .pdf-footer { position:fixed; bottom:18px; left:0; right:0; text-align:center; font-size:14px; font-weight:700; color:#444; }
+  .qty-edit { width:90px; display:inline-block; margin-right:10px; }
+  .name-edit { width:200px; display:inline-block; margin-right:10px; }
+  .pin-box { background:#f8f8f8; padding:18px; border-radius:12px; margin-bottom:18px; border:2px solid #ddd; }
+  .status-badge { padding:6px 12px; border-radius:20px; font-size:12px; font-weight:700; color:white; }
+  .status-pending { background:var(--gold); color:#333; }
+  .status-approved { background:var(--green); }
+  .status-cancelled { background:#888; }
+  .status-returned { background:var(--blue); }
+
+  .select-grid { display:grid; gap:10px; }
+  .item-pick { border:2px solid #eee; border-radius:12px; padding:12px; background:#fff; }
+  .item-pick-top { display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+  .small-muted { color:#666; font-weight:600; font-size:13px; }
+  .qty-row { display:flex; gap:10px; align-items:center; margin-top:8px; }
+  .qty-row input[type="number"] { margin:0; width:120px; }
+  .item-pick input[type="checkbox"] { width:18px; height:18px; }
 </style>
 </head>
 <body>
@@ -135,22 +141,63 @@
 
 <div class="modal" id="addStockModal"><div class="modal-content"><span class="close" onclick="window.closeModal('addStockModal')">&times;</span><h2 style="color:var(--red); margin-bottom:15px;">Add New Item</h2><label>Category</label><input type="text" id="addCatName" readonly><label>Item Name</label><input type="text" id="itemName" placeholder="Enter new item name"><label>Qty to Add</label><input type="number" id="itemQty" min="1" value="1"><button class="btn" onclick="window.addEquipment()">Save to Stock</button></div></div>
 
-<div class="modal" id="editPinModal"><div class="modal-content"><span class="close" onclick="window.closeModal('editPinModal')">&times;</span><h2 style="color:var(--red); margin-bottom:15px;">Authorization Required</h2><div class="pin-box"><label>Enter PIN</label><input type="password" id="pinInput"><input type="hidden" id="actionType"><input type="hidden" id="editCatName"></div><button class="btn" onclick="window.checkPin()">Unlock</button><div id="pinError" style="color:var(--red); margin-top:10px; font-weight:600;"></div></div></div>
+<div class="modal" id="editPinModal"><div class="modal-content"><span class="close" onclick="window.closeModal('editPinModal')">&times;</span><h2 style="color:var(--red); margin-bottom:15px;">Authorization Required</h2><div class="pin-box"><label>Enter PIN</label><input type="password" id="pinInput"><input type="hidden" id="actionType"><input type="hidden" id="editCatName"></div><button class="btn" onclick="window.checkPin()">Unlock</button><div id="pinError" style="color:var(--red); margin-top:10px; font-weight:600;"> </div></div></div>
 
 <div class="modal" id="editCategoryModal"><div class="modal-content"><span class="close" onclick="window.closeModal('editCategoryModal')">&times;</span><h2 id="editCatTitle" style="color:var(--red); margin-bottom:15px;">Edit Category</h2><div id="editCatContent"></div><button class="btn" onclick="window.saveCategoryEdit()">Save All Changes</button></div></div>
 
-<div class="modal" id="bookingModal"><div class="modal-content"><span class="close" onclick="window.closeModal('bookingModal')">&times;</span><h2 style="color:var(--red); margin-bottom:15px;">New Event Booking</h2><div id="bookingMessage"></div><label>Client Name</label><input type="text" id="clientName"><label>Client WhatsApp</label><input type="text" id="clientPhone" placeholder="0712345678"><small style="color:#666;">Format: 0712345678 or 254712345678</small><label>Event Name</label><input type="text" id="eventName"><label>Event Date</label><input type="date" id="eventDate"><div id="bookingForm"></div><button class="btn" onclick="window.submitBooking()">Submit Booking</button></div></div>
+<div class="modal" id="bookingModal">
+  <div class="modal-content">
+    <span class="close" onclick="window.closeModal('bookingModal')">&times;</span>
+    <h2 style="color:var(--red); margin-bottom:15px;">New Event Booking</h2>
+    <div id="bookingMessage"></div>
 
-<div class="modal" id="pdfSignModal"><div class="modal-content"><span class="close" onclick="window.closeModal('pdfSignModal')">&times;</span><h2 style="color:var(--red); margin-bottom:15px;">PDF Details</h2><label>Prepared By</label><input type="text" id="preparedBy" placeholder="Staff Name"><label>Phone</label><input type="text" id="phoneNo" placeholder="0741437977"><button class="btn" onclick="window.downloadPDF()">Download PDF</button></div></div>
+    <label>Client Name</label>
+    <input type="text" id="clientName">
 
-<div class="modal" id="docModal"><div class="doc-modal"><span class="close no-print" onclick="window.closeModal('docModal')">&times;</span><div id="docContent"></div><button class="btn no-print" onclick="window.openModal('pdfSignModal')">💾 Download PDF</button></div></div>
+    <label>Client WhatsApp</label>
+    <input type="text" id="clientPhone" placeholder="0712345678">
+    <small style="color:#666;">Format: 0712345678 or 254712345678</small>
+
+    <label>Event Name</label>
+    <input type="text" id="eventName">
+
+    <label>Event Date</label>
+    <input type="date" id="eventDate">
+
+    <h3 style="color:var(--red); margin-top:18px; margin-bottom:10px; font-size:16px;">Prepared By (PDF Details)</h3>
+    <label>Prepared By</label>
+    <input type="text" id="preparedBy" placeholder="Staff Name">
+    <label>Phone</label>
+    <input type="text" id="phoneNo" placeholder="0741437977">
+
+    <div id="bookingForm"></div>
+    <button class="btn" onclick="window.submitBooking()">Submit Booking</button>
+  </div>
+</div>
+
+<div class="modal" id="pdfSignModal">
+  <div class="modal-content">
+    <span class="close" onclick="window.closeModal('pdfSignModal')">&times;</span>
+    <h2 style="color:var(--red); margin-bottom:15px;">PDF Details</h2>
+    <label>Prepared By</label><input type="text" id="preparedBy" placeholder="Staff Name">
+    <label>Phone</label><input type="text" id="phoneNo" placeholder="0741437977">
+    <button class="btn" onclick="window.downloadPDF()">Download PDF</button>
+  </div>
+</div>
+
+<div class="modal" id="docModal">
+  <div class="doc-modal">
+    <span class="close no-print" onclick="window.closeModal('docModal')">&times;</span>
+    <div id="docContent"></div>
+    <button class="btn no-print" onclick="window.downloadPDF()">💾 Download PDF</button>
+  </div>
+</div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getDatabase, ref, set, onValue, push, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
   const firebaseConfig = { databaseURL: "https://simes1-abedd-default-rtdb.firebaseio.com" };
-
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
@@ -202,7 +249,11 @@
   function renderInventory() {
     const container = document.getElementById('inventory');
     container.innerHTML = '';
-    const cats = [{name:"Catering", color:"green"},{name:"Event", color:"blue"},{name:"Deco", color:"gold"}];
+    const cats = [
+      {name:"Catering", color:"green"},
+      {name:"Event", color:"blue"},
+      {name:"Deco", color:"gold"}
+    ];
 
     cats.forEach(cat => {
       let tableRows = '';
@@ -369,6 +420,7 @@
     for(let itemId in (b.items || {})) equipment[itemId].out += b.items[itemId].qty;
     update(ref(db, 'bookings/' + id), {status: 'approved'});
     set(ref(db, 'equipment'), equipment);
+
     const message = `Hi ${b.client}! \n\nYour booking for "${b.eventName}" on ${b.date} has been *APPROVED* ✅\n\nFlava Catering will contact you soon.\nThank you for choosing us!`;
     sendWhatsApp(b.phone, message);
   }
@@ -390,31 +442,24 @@
     }
     update(ref(db, 'bookings/' + id), {status: 'returned'});
     set(ref(db, 'equipment'), equipment);
+
     const message = `Hi ${b.client}, \n\nAll equipment for "${b.eventName}" has been *RETURNED*. Thank you for using Flava Catering!`;
     sendWhatsApp(b.phone, message);
     alert('Items Returned! Stock updated and event moved to Done.');
   }
 
+  // Events site: view + download only (uses saved preparedBy/preparedPhone)
   window.preparePDF = function(id) {
     currentDocId = id;
-    const b = bookings[currentDocId];
-    if(!b){ alert('Booking not found'); return; }
-    window.viewBookingDoc(currentDocId, ' ', ' ');
-    document.getElementById('preparedBy').value = '';
-    document.getElementById('phoneNo').value = '';
-    window.openModal('pdfSignModal');
+    window.viewBookingDoc(currentDocId);
   }
 
   window.downloadPDF = function() {
-    const prepared = document.getElementById('preparedBy').value.trim();
-    const phone = document.getElementById('phoneNo').value.trim();
-    if(!prepared || !phone) { alert('Please fill both fields'); return; }
-    window.closeModal('pdfSignModal');
-
+    if(!currentDocId) { alert('Open View PDF first'); return; }
     const b = bookings[currentDocId];
     if(!b) { alert('Booking not found'); return; }
 
-    window.viewBookingDoc(currentDocId, prepared, phone);
+    window.viewBookingDoc(currentDocId);
 
     const docModal = document.getElementById('docModal');
     const element = document.getElementById('docContent');
@@ -437,7 +482,7 @@
     });
   }
 
-  window.viewBookingDoc = function(id, prepared = '', phone = '') {
+  window.viewBookingDoc = function(id) {
     const b = bookings[id];
     const docContent = document.getElementById('docContent');
     const docModal = document.getElementById('docModal');
@@ -457,6 +502,9 @@
     if(!itemsRows){
       itemsRows = `<tr><td colspan="3" style="text-align:center; padding:14px; color:#888; font-weight:700;">No items found for this booking</td></tr>`;
     }
+
+    const prepared = b.preparedBy || '-';
+    const phone = b.preparedPhone || '-';
 
     if(docContent){
       docContent.innerHTML = `
@@ -482,8 +530,8 @@
         </table>
 
         <div style="margin-top:40px; font-size:16px; padding-bottom:60px;">
-          <p><b>Prepared By:</b> ${prepared || '-'}</p>
-          <p><b>Phone:</b> ${phone || '-'}</p>
+          <p><b>Prepared By:</b> ${prepared}</p>
+          <p><b>Phone:</b> ${phone}</p>
         </div>
 
         <p style="margin-top:20px; font-style:italic; color:#555;"><b>Notes:</b> All items must be returned in good condition after event.</p>
@@ -494,10 +542,189 @@
     if(docModal) docModal.style.display = 'flex';
   }
 
-  function renderBookingForm() { /* unchanged */ }
+  function renderBookingForm() {
+    const wrap = document.getElementById('bookingForm');
+    if(!wrap) return;
+
+    const cats = [
+      { name: 'Catering', order: 1 },
+      { name: 'Event', order: 2 },
+      { name: 'Deco', order: 3 }
+    ];
+
+    const itemsByCat = {};
+    cats.forEach(c => itemsByCat[c.name] = []);
+
+    for (let id in equipment) {
+      const item = equipment[id];
+      if (!item) continue;
+      if (!itemsByCat[item.category]) continue;
+      const available = Math.max(0, (item.total || 0) - (item.out || 0));
+      itemsByCat[item.category].push({ id, name: item.name, available, total: item.total || 0 });
+    }
+
+    let html = '';
+
+    cats.forEach(cat => {
+      const list = itemsByCat[cat.name] || [];
+      if (!list.length) return;
+
+      html += `
+        <h3 style="color:var(--red); margin-top:18px; margin-bottom:10px; font-size:16px;">Select ${cat.name} Items</h3>
+        <div class="select-grid">
+      `;
+
+      // Optional: stable ordering by name
+      list.sort((a,b) => a.name.localeCompare(b.name));
+
+      list.forEach(it => {
+        const maxAvail = it.available;
+        const disabled = maxAvail <= 0;
+        const safeMax = maxAvail > 0 ? maxAvail : 0;
+
+        html += `
+          <div class="item-pick">
+            <div class="item-pick-top">
+              <div>
+                <label style="display:flex; gap:10px; align-items:flex-start;">
+                  <input
+                    type="checkbox"
+                    id="pick_${it.id}"
+                    ${disabled ? 'disabled' : ''}
+                    ${safeMax > 0 ? '' : ''}
+                    onchange="window.togglePick('${it.id}', ${safeMax})"
+                  >
+                  <div>
+                    <div style="font-weight:800; color:#333; margin-bottom:4px;">${it.name}</div>
+                    <div class="small-muted">Available: ${safeMax}</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div class="qty-row">
+              <span class="small-muted">Qty:</span>
+              <input
+                type="number"
+                id="qty_${it.id}"
+                min="0"
+                max="${safeMax}"
+                value="0"
+                ${disabled ? 'disabled' : ''}
+                onchange="window.ensureQtyWithin('${it.id}', ${safeMax})"
+              >
+            </div>
+          </div>
+        `;
+      });
+
+      html += `</div>`;
+    });
+
+    if (!html) {
+      html = `<p style="color:#888; font-weight:700;">No items available to select.</p>`;
+    }
+
+    wrap.innerHTML = html;
+
+    // helpers needed by onchange
+    window.togglePick = function(itemId, maxAvail) {
+      const cb = document.getElementById(`pick_${itemId}`);
+      const qty = document.getElementById(`qty_${itemId}`);
+      if(!cb || !qty) return;
+
+      if(cb.checked) {
+        const current = parseInt(qty.value) || 0;
+        qty.value = current > 0 ? Math.min(current, maxAvail) : (maxAvail >= 1 ? 1 : 0);
+      } else {
+        qty.value = 0;
+      }
+    };
+
+    window.ensureQtyWithin = function(itemId, maxAvail) {
+      const qty = document.getElementById(`qty_${itemId}`);
+      const cb = document.getElementById(`pick_${itemId}`);
+      if(!qty || !cb) return;
+
+      let v = parseInt(qty.value) || 0;
+      v = Math.max(0, Math.min(v, maxAvail));
+      qty.value = v;
+
+      cb.checked = v > 0;
+    };
+  }
 
   window.submitBooking = function() {
-    alert('renderBookingForm() is missing, so booking cannot be built correctly.');
+    const client = document.getElementById('clientName').value.trim();
+    const phone = document.getElementById('clientPhone').value.trim();
+    const event = document.getElementById('eventName').value.trim();
+    const date = document.getElementById('eventDate').value;
+
+    const preparedBy = (document.getElementById('preparedBy')?.value || '').trim();
+    const preparedPhone = (document.getElementById('phoneNo')?.value || '').trim();
+
+    const msgDiv = document.getElementById('bookingMessage');
+    msgDiv.innerHTML = '';
+
+    if(!client || !phone || !event || !date) {
+      msgDiv.innerHTML = '<div class="alert alert-error">Please fill all event details</div>';
+      return;
+    }
+    if(phone.length < 10) {
+      msgDiv.innerHTML = '<div class="alert alert-error">Enter valid WhatsApp number: 0712345678</div>';
+      return;
+    }
+    if(!preparedBy || !preparedPhone) {
+      msgDiv.innerHTML = '<div class="alert alert-error">Please fill PDF Prepared By and Phone</div>';
+      return;
+    }
+
+    let bookedItems = {};
+    let hasError = false;
+
+    for(let id in equipment){
+      const input = document.getElementById(`qty_${id}`);
+      if(input) {
+        const requested = parseInt(input.value) || 0;
+        const available = equipment[id].total - equipment[id].out;
+        if(requested > available) {
+          hasError = true;
+          msgDiv.innerHTML += `<div class="alert alert-error">Not enough ${equipment[id].name}</div>`;
+        }
+        if(requested > 0) bookedItems[id] = {name:equipment[id].name, qty:requested};
+      }
+    }
+
+    if(Object.keys(bookedItems).length === 0) {
+      msgDiv.innerHTML = '<div class="alert alert-error">Select at least 1 item</div>';
+      return;
+    }
+
+    if(!hasError) {
+      push(ref(db, 'bookings'), {
+        client,
+        phone,
+        eventName: event,
+        date,
+        items: bookedItems,
+        status: 'pending',
+        id: Date.now(),
+        preparedBy,
+        preparedPhone
+      });
+
+      msgDiv.innerHTML = `<div class="alert alert-success">✅ Booking Submitted! Awaiting Approval</div>`;
+
+      setTimeout(() => {
+        document.getElementById('clientName').value = '';
+        document.getElementById('clientPhone').value = '';
+        document.getElementById('eventName').value = '';
+        document.getElementById('eventDate').value = '';
+        document.getElementById('preparedBy').value = '';
+        document.getElementById('phoneNo').value = '';
+        window.closeModal('bookingModal');
+      }, 1500);
+    }
   }
 
   window.addEquipment = function() {
@@ -505,6 +732,7 @@
     const category = document.getElementById('addCatName').value;
     const qty = parseInt(document.getElementById('itemQty').value) || 0;
     if(!category || !name || qty < 1) { alert('Fill all fields'); return; }
+
     const newId = Date.now();
     equipment[newId] = {name, category, total: qty, out: 0};
     set(ref(db, 'equipment'), equipment);
